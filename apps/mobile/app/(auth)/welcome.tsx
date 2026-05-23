@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import { ImageBackground, Pressable, ScrollView, Text as RNText, View, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
-import { ArrowRight, Brain, Camera, ChevronDown, ChevronRight, Dumbbell, Globe } from "lucide-react-native";
+import { ArrowRight, Brain, Camera, ChevronRight, Dumbbell } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { LanguageSelectionSheet, type LanguageCode } from "@/components/LanguageSelectionSheet";
 import { useAppLanguage } from "@/hooks/useAppLanguage";
+import { useAppFont } from "@/hooks/useAppFont";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { radius, spacing } from "@/theme/tokens";
-import { LinearGradient } from "expo-linear-gradient";
 
 type FeatureItemProps = {
   title: string;
   icon: "camera" | "workout" | "ai";
+  titleFontFamily: string;
 };
 
-function FeatureItem({ title, icon }: FeatureItemProps) {
+function FeatureItem({ title, icon, titleFontFamily }: FeatureItemProps) {
   const { colors } = useAppTheme();
   const Icon = icon === "camera" ? Camera : icon === "workout" ? Dumbbell : Brain;
 
@@ -24,29 +25,35 @@ function FeatureItem({ title, icon }: FeatureItemProps) {
       accessibilityRole="button"
       style={({ pressed }) => ({
         width: "100%",
-        minHeight: 86,
-        borderRadius: radius.lg,
-        backgroundColor: "rgba(16, 23, 38, 0.98)",
-        borderWidth: 1.5,
-        borderColor: "#B8FF3D",
         opacity: pressed ? 0.92 : 1,
-        shadowColor: "#000000",
-        shadowOpacity: 0.45,
-        shadowRadius: 12,
-        shadowOffset: { width: 0, height: 8 },
-        elevation: 8,
-        justifyContent: "center",
-        paddingHorizontal: spacing[4],
       })}
     >
       <View
-        pointerEvents="none"
         style={{
           width: "100%",
-          flexDirection: "row",
-          alignItems: "center",
+          minHeight: 86,
+          marginTop: spacing[3],
+          borderRadius: radius.lg,
+          backgroundColor: "rgba(16, 23, 38, 0.98)",
+          borderWidth: 1.5,
+          borderColor: "#B8FF3D",
+          shadowColor: "#000000",
+          shadowOpacity: 0.45,
+          shadowRadius: 12,
+          shadowOffset: { width: 0, height: 8 },
+          elevation: 8,
+          justifyContent: "center",
+          paddingHorizontal: spacing[4],
         }}
       >
+        <View
+          pointerEvents="none"
+          style={{
+            width: "100%",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
         <View
           style={{
             width: 52,
@@ -73,6 +80,7 @@ function FeatureItem({ title, icon }: FeatureItemProps) {
             color: colors.text.primary,
             fontSize: 17,
             lineHeight: 23,
+            fontFamily: titleFontFamily,
             fontWeight: "700",
             includeFontPadding: false,
           }}
@@ -82,12 +90,14 @@ function FeatureItem({ title, icon }: FeatureItemProps) {
 
         <ChevronRight color={colors.text.muted} size={22} />
       </View>
+      </View>
     </Pressable>
   );
 }
 
 export default function WelcomeScreen() {
   const { t, mode, setMode } = useAppLanguage();
+  const { families } = useAppFont();
   const { colors } = useAppTheme();
   const { width, height } = useWindowDimensions();
   const [isLanguageSheetVisible, setIsLanguageSheetVisible] = useState(false);
@@ -124,20 +134,15 @@ export default function WelcomeScreen() {
           <View style={{ flex: 1, backgroundColor: "rgba(5, 8, 14, 0.52)" }} />
         </ImageBackground>
 
-        <LinearGradient
-           pointerEvents="none"
-           colors={[
-            "rgba(5, 8, 14, 0)",
-            "rgba(5, 8, 14, 0.45)",
-            "rgba(5, 8, 14, 0.82)",
-          ]}
-           locations={[0, 0.05, 1]}
+        <View
+          pointerEvents="none"
           style={{
             position: "absolute",
             left: 0,
             right: 0,
             bottom: 0,
             height: "60%",
+            backgroundColor: "rgba(5, 8, 14, 0.66)",
           }}
         />
       </View>
@@ -176,23 +181,20 @@ export default function WelcomeScreen() {
               paddingHorizontal: spacing[4],
             })}
           >
-            <View pointerEvents="none" style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-              <Globe color={colors.accent.nutrition} size={20} />
-              <RNText
-                numberOfLines={1}
-                style={{
-                  marginLeft: spacing[2],
-                  color: colors.text.primary,
-                  fontSize: 15,
-                  lineHeight: 20,
-                  fontWeight: "800",
-                  includeFontPadding: false,
-                }}
-              >
-                {languageLabel}
-              </RNText>
-              <ChevronDown color={colors.text.secondary} size={18} style={{ marginLeft: spacing[2] }} />
-            </View>
+            <RNText
+              numberOfLines={1}
+              style={{
+                color: colors.text.primary,
+                fontSize: 15,
+                lineHeight: 20,
+                fontFamily: families.semibold,
+                fontWeight: "800",
+                includeFontPadding: false,
+                textAlign: "center",
+              }}
+            >
+              {languageLabel}
+            </RNText>
           </Pressable>
 
           <Pressable
@@ -207,6 +209,7 @@ export default function WelcomeScreen() {
                 color: colors.text.primary,
                 fontSize: 18,
                 lineHeight: 24,
+                fontFamily: families.semibold,
                 fontWeight: "800",
                 includeFontPadding: false,
               }}
@@ -225,14 +228,15 @@ export default function WelcomeScreen() {
       color: colors.text.primary,
       fontSize: heroFontSize,
       lineHeight: heroLineHeight,
+      fontFamily: families.bold,
       fontWeight: "900",
-      letterSpacing: -1.2,
+      letterSpacing: 0,
       includeFontPadding: false,
     }}
            >
     {t("welcomeHeadlineLine1")}{" "}
     {t("welcomeHeadlineLine2Start")}
-    <RNText style={{ color: colors.accent.nutrition }}>
+    <RNText style={{ color: colors.accent.nutrition, fontFamily: families.bold }}>
       {t("welcomeHeadlineLine2Accent")}
     </RNText>
   </RNText>
@@ -245,8 +249,9 @@ export default function WelcomeScreen() {
       color: colors.text.primary,
       fontSize: heroFontSize,
       lineHeight: heroLineHeight,
+      fontFamily: families.bold,
       fontWeight: "900",
-      letterSpacing: -1.2,
+      letterSpacing: 0,
       includeFontPadding: false,
       marginTop: spacing[1],
     }}
@@ -260,6 +265,7 @@ export default function WelcomeScreen() {
               color: colors.text.secondary,
               fontSize: 16,
               lineHeight: 24,
+              fontFamily: families.medium,
               fontWeight: "500",
               includeFontPadding: false,
             }}
@@ -268,10 +274,10 @@ export default function WelcomeScreen() {
           </RNText>
         </View>
 
-        <View style={{ marginTop: spacing[6], gap: spacing[3] }}>
-          <FeatureItem title={t("welcomeFeature1")} icon="camera" />
-          <FeatureItem title={t("welcomeFeature2")} icon="workout" />
-          <FeatureItem title={t("welcomeFeature3")} icon="ai" />
+        <View style={{ marginTop: spacing[6] }}>
+          <FeatureItem title={t("welcomeFeature1")} icon="camera" titleFontFamily={families.bold} />
+          <FeatureItem title={t("welcomeFeature2")} icon="workout" titleFontFamily={families.bold} />
+          <FeatureItem title={t("welcomeFeature3")} icon="ai" titleFontFamily={families.bold} />
         </View>
 
         <View style={{ marginTop: spacing[8] }}>
@@ -279,75 +285,84 @@ export default function WelcomeScreen() {
             accessibilityRole="button"
             onPress={() => router.replace("/(tabs)/home")}
             style={({ pressed }) => ({
-              height: 55,
-              borderRadius: radius.full,
-              backgroundColor: "#B8FF3D",
-              borderWidth: 2,
-              borderColor: "rgba(255,255,255,0.75)",
               opacity: pressed ? 0.9 : 1,
-              justifyContent: "center",
-              
-              shadowColor: "#000000",
-              shadowOpacity: 0.35,
-              shadowRadius: 18,
-              shadowOffset: { width: 0, height: 10 },
-              elevation: 8,
             })}
           >
-            <View pointerEvents="none" style={{ width: "100%", alignItems: "center", justifyContent: "center" }}>
-              <RNText
-                numberOfLines={1}
-                style={{
-                  color: "#B8FF3D",
-                  fontSize: 18,
-                  lineHeight: 24,
-                  fontWeight: "900",
-                  includeFontPadding: false,
-                }}
-              >
-                {t("welcomeGetStarted")}
-              </RNText>
-              <View style={{ position: "absolute", right: spacing[5] }}>
-                <ArrowRight color={"#B8FF3D"} size={25} />
+            <View
+              style={{
+                height: 55,
+                borderRadius: radius.full,
+                backgroundColor: "#B8FF3D",
+                borderWidth: 2,
+                borderColor: "rgba(255,255,255,0.75)",
+                justifyContent: "center",
+                shadowColor: "#000000",
+                shadowOpacity: 0.35,
+                shadowRadius: 18,
+                shadowOffset: { width: 0, height: 10 },
+                elevation: 8,
+              }}
+            >
+              <View pointerEvents="none" style={{ width: "100%", alignItems: "center", justifyContent: "center" }}>
+                <RNText
+                  numberOfLines={1}
+                  style={{
+                    color: colors.bg.primary,
+                    fontSize: 18,
+                    lineHeight: 24,
+                    fontFamily: families.bold,
+                    fontWeight: "900",
+                    includeFontPadding: false,
+                  }}
+                >
+                  {t("welcomeGetStarted")}
+                </RNText>
+                <View style={{ position: "absolute", right: spacing[5] }}>
+                  <ArrowRight color={colors.bg.primary} size={25} />
+                </View>
               </View>
             </View>
           </Pressable>
 
           <Pressable
-  accessibilityRole="button"
-  onPress={() => router.push("/profile")}
-  style={({ pressed }) => ({
-    marginTop: spacing[12],
-    height: 56,
-    width: "80%",
-    alignSelf: "center",
-    borderRadius: radius.full,
-
-    backgroundColor: "rgba(5, 8, 14, 0.72)",
-    borderWidth: 2,
-    elevation: 2,
-    borderColor: "#B8FF3D",
-
-    alignItems: "center",
-    justifyContent: "center",
-    opacity: pressed ? 0.9 : 1,
-  })}
->
-  <RNText
-    numberOfLines={1}
-    style={{
-      width: "100%",
-      textAlign: "center",
-      color: colors.text.primary,
-      fontSize: 16,
-      lineHeight: 22,
-      fontWeight: "800",
-      includeFontPadding: false,
-    }}
-  >
-    {t("welcomeSignIn")}
-  </RNText>
-</Pressable>
+            accessibilityRole="button"
+            onPress={() => router.push("/profile")}
+            style={({ pressed }) => ({
+              marginTop: spacing[8],
+              width: "80%",
+              alignSelf: "center",
+              opacity: pressed ? 0.9 : 1,
+            })}
+          >
+            <View
+              style={{
+                height: 56,
+                borderRadius: radius.full,
+                backgroundColor: "rgba(5, 8, 14, 0.72)",
+                borderWidth: 2,
+                borderColor: "#B8FF3D",
+                alignItems: "center",
+                justifyContent: "center",
+                elevation: 2,
+              }}
+            >
+              <RNText
+                numberOfLines={1}
+                style={{
+                  width: "100%",
+                  textAlign: "center",
+                  color: colors.text.primary,
+                  fontSize: 16,
+                  lineHeight: 22,
+                  fontFamily: families.semibold,
+                  fontWeight: "800",
+                  includeFontPadding: false,
+                }}
+              >
+                {t("welcomeSignIn")}
+              </RNText>
+            </View>
+          </Pressable>
         </View>
 
         <View 
@@ -362,14 +377,15 @@ export default function WelcomeScreen() {
               color: colors.text.muted,
               fontSize: 14,
               lineHeight: 22,
+              fontFamily: families.regular,
               fontWeight: "500",
               includeFontPadding: false,
             }}
           >
             {t("welcomeAgreementPrefix")}
-            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline" }}>{t("welcomeTerms")}</RNText>
+            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline", fontFamily: families.medium }}>{t("welcomeTerms")}</RNText>
             {t("welcomeAgreementMiddle")}
-            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline" }}>{t("welcomePrivacy")}</RNText>.
+            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline", fontFamily: families.medium }}>{t("welcomePrivacy")}</RNText>.
           </RNText>
         </View>
       </ScrollView>

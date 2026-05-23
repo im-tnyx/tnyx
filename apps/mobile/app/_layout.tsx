@@ -20,6 +20,10 @@ export default function RootLayout() {
     "NotoSansDevanagari-Medium": require("../assets/fonts/NotoSansDevanagari-Medium.ttf"),
     "NotoSansDevanagari-SemiBold": require("../assets/fonts/NotoSansDevanagari-SemiBold.ttf"),
     "NotoSansDevanagari-Bold": require("../assets/fonts/NotoSansDevanagari-Bold.ttf"),
+    "PlusJakartaSans-Regular": require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
+    "PlusJakartaSans-Medium": require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
+    "PlusJakartaSans-SemiBold": require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
+    "PlusJakartaSans-Bold": require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
   });
 
   useEffect(() => {

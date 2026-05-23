@@ -1,5 +1,7 @@
 import { Platform } from "react-native";
+import { getLocales } from "expo-localization";
 import { useFontPreferenceStore } from "@/store/font-preference.store";
+import { useLanguagePreferenceStore } from "@/store/language-preference.store";
 
 type FontFamilies = {
   regular: string;
@@ -13,6 +15,12 @@ type UseAppFontReturn = {
   setMode: (mode: "default" | "custom") => void;
   families: FontFamilies;
 };
+
+function resolveSystemLanguage(): "en" | "hi" {
+  const primaryLocale = getLocales()[0];
+  const languageCode = (primaryLocale?.languageCode ?? "en").toLowerCase();
+  return languageCode === "hi" ? "hi" : "en";
+}
 
 function getDefaultFamilies(): FontFamilies {
   const systemDefault = Platform.select({
@@ -29,7 +37,16 @@ function getDefaultFamilies(): FontFamilies {
   };
 }
 
-function getCustomFamilies(): FontFamilies {
+function getCustomFamilies(language: "en" | "hi"): FontFamilies {
+  if (language === "en") {
+    return {
+      regular: "PlusJakartaSans-Regular",
+      medium: "PlusJakartaSans-Medium",
+      semibold: "PlusJakartaSans-SemiBold",
+      bold: "PlusJakartaSans-Bold",
+    };
+  }
+
   return {
     regular: "NotoSansDevanagari-Regular",
     medium: "NotoSansDevanagari-Medium",
@@ -41,8 +58,10 @@ function getCustomFamilies(): FontFamilies {
 export function useAppFont(): UseAppFontReturn {
   const mode = useFontPreferenceStore((state) => state.mode);
   const setMode = useFontPreferenceStore((state) => state.setMode);
+  const languageMode = useLanguagePreferenceStore((state) => state.mode);
+  const resolvedLanguage = languageMode === "system" ? resolveSystemLanguage() : languageMode;
 
-  const families = mode === "custom" ? getCustomFamilies() : getDefaultFamilies();
+  const families = mode === "custom" ? getCustomFamilies(resolvedLanguage) : getDefaultFamilies();
 
   return { mode, setMode, families };
 }

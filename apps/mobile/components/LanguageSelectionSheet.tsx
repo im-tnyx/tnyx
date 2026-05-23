@@ -1,7 +1,8 @@
+import { useEffect, useState } from "react";
 import { Modal, Pressable, Text as RNText, View } from "react-native";
 import { CheckCircle, Circle, X } from "lucide-react-native";
-import { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useAppFont } from "@/hooks/useAppFont";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { radius, spacing } from "@/theme/tokens";
 
@@ -18,11 +19,10 @@ type LanguageOption = {
   code: LanguageCode;
   flag: string;
   title: string;
- 
 };
 
 const LANGUAGE_OPTIONS: LanguageOption[] = [
-  { code: "en", flag: "🇺🇸", title: "English" },
+  { code: "en", flag: "🇺🇸", title: "ENGLISH" },
   { code: "hi", flag: "🇮🇳", title: "हिंदी" },
 ];
 
@@ -33,6 +33,7 @@ export function LanguageSelectionSheet({
   onApplyLanguage,
 }: LanguageSelectionSheetProps) {
   const { colors } = useAppTheme();
+  const { families } = useAppFont();
   const insets = useSafeAreaInsets();
   const [draftLanguage, setDraftLanguage] = useState<LanguageCode>(selectedLanguage);
 
@@ -107,7 +108,7 @@ export function LanguageSelectionSheet({
                 color: colors.text.primary,
                 fontSize: 22,
                 lineHeight: 28,
-                fontWeight: "800",
+                fontFamily: families.bold,
                 includeFontPadding: false,
               }}
             >
@@ -119,7 +120,7 @@ export function LanguageSelectionSheet({
               accessibilityLabel="Close language selection"
               onPress={onDismiss}
               hitSlop={10}
-              style={{
+              style={({ pressed }) => ({
                 width: 32,
                 height: 32,
                 borderRadius: radius.full,
@@ -127,7 +128,8 @@ export function LanguageSelectionSheet({
                 justifyContent: "center",
                 backgroundColor: "rgba(255,255,255,0.08)",
                 marginLeft: spacing[3],
-              }}
+                opacity: pressed ? 0.85 : 1,
+              })}
             >
               <X color={colors.text.secondary} size={20} />
             </Pressable>
@@ -145,77 +147,78 @@ export function LanguageSelectionSheet({
                   onPress={() => setDraftLanguage(language.code)}
                   style={({ pressed }) => ({
                     width: "100%",
-                    minHeight: 76,
-                    borderRadius: radius.lg,
-                    borderWidth: isSelected ? 2 : 1,
-                    borderColor: isSelected ? colors.accent.nutrition : "rgba(255,255,255,0.14)",
-                    backgroundColor: isSelected ? "rgba(100, 133, 113, 0.12)" : "rgba(255,255,255,0.06)",
                     marginTop: spacing[3],
-                    paddingHorizontal: spacing[4],
                     opacity: pressed ? 0.9 : 1,
-                    justifyContent: "center",
                   })}
                 >
                   <View
                     style={{
                       width: "100%",
-                      flexDirection: "row",
-                      alignItems: "center",
+                      minHeight: 84,
+                      borderRadius: radius.lg,
+                      borderWidth: isSelected ? 2 : 1.2,
+                      borderColor: isSelected ? colors.accent.nutrition : "rgba(255,255,255,0.16)",
+                      backgroundColor: isSelected ? "rgba(124, 227, 139, 0.12)" : "rgba(16, 23, 38, 0.95)",
+                      paddingHorizontal: spacing[4],
+                      justifyContent: "center",
+                      shadowColor: "#000000",
+                      shadowOpacity: isSelected ? 0.42 : 0.28,
+                      shadowRadius: 10,
+                      shadowOffset: { width: 0, height: 6 },
+                      elevation: isSelected ? 7 : 4,
                     }}
                   >
-                    <RNText
-                      style={{
-                        width: 36,
-                        fontSize: 24,
-                        lineHeight: 30,
-                        includeFontPadding: false,
-                      }}
-                    >
-                      {language.flag}
-                    </RNText>
-
-                    <View style={{ flex: 1, minWidth: 0, marginLeft: spacing[4], marginRight: spacing[4] }}>
-                      <RNText
-                        numberOfLines={1}
-                        style={{
-                          color: isSelected ? colors.accent.nutrition : colors.text.primary,
-                          fontSize: 17,
-                          lineHeight: 22,
-                          fontWeight: "800",
-                          includeFontPadding: false,
-                        }}
-                      >
-                        {language.title}
-                      </RNText>
-                      <RNText
-                        numberOfLines={1}
-                        style={{
-                          marginTop: 6,
-                          color: colors.text.muted,
-                          fontSize: 13,
-                          lineHeight: 17,
-                          fontWeight: "500",
-                          includeFontPadding: false,
-                        }}
-                      >
-                        
-                      </RNText>
-                    </View>
-
                     <View
+                      pointerEvents="none"
                       style={{
-                        width: 40,
-                        height: 40,
+                        width: "100%",
+                        flexDirection: "row",
                         alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
                       }}
                     >
-                      {isSelected ? (
-                        <CheckCircle color={colors.accent.nutrition} size={26} />
-                      ) : (
-                        <Circle color={colors.text.muted} size={25} />
-                      )}
+                      <RNText
+                        style={{
+                          width: 36,
+                          color: colors.text.primary,
+                          fontSize: 24,
+                          lineHeight: 30,
+                          textAlign: "center",
+                          includeFontPadding: false,
+                        }}
+                      >
+                        {language.flag}
+                      </RNText>
+
+                      <View style={{ flex: 1, minWidth: 0, marginLeft: spacing[4], marginRight: spacing[4] }}>
+                        <RNText
+                          numberOfLines={1}
+                          style={{
+                            color: isSelected ? colors.accent.nutrition : colors.text.primary,
+                            fontSize: 17,
+                            lineHeight: 22,
+                            fontFamily: families.bold,
+                            includeFontPadding: false,
+                          }}
+                        >
+                          {language.title}
+                        </RNText>
+                      </View>
+
+                      <View
+                        style={{
+                          width: 40,
+                          height: 40,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        {isSelected ? (
+                          <CheckCircle color={colors.accent.nutrition} size={26} />
+                        ) : (
+                          <Circle color={colors.text.muted} size={25} />
+                        )}
+                      </View>
                     </View>
                   </View>
                 </Pressable>
@@ -228,29 +231,41 @@ export function LanguageSelectionSheet({
             onPress={() => onApplyLanguage(draftLanguage)}
             style={({ pressed }) => ({
               width: "100%",
-              height: 56,
-              borderRadius: radius.full,
-              backgroundColor: colors.accent.nutrition,
-              alignItems: "center",
-              justifyContent: "center",
               marginTop: spacing[5],
               opacity: pressed ? 0.9 : 1,
             })}
           >
-            <RNText
-              numberOfLines={1}
+            <View
               style={{
-                color: "rgb(255, 255, 255)",
-                fontSize: 22,
-                lineHeight: 22,
-                fontWeight: "900",
-                includeFontPadding: false,
-                textTransform: "uppercase",
-                textAlign: "center",
+                height: 56,
+                borderRadius: radius.full,
+                backgroundColor: colors.accent.nutrition,
+                borderWidth: 2,
+                borderColor: "rgba(255,255,255,0.75)",
+                alignItems: "center",
+                justifyContent: "center",
+                shadowColor: "#000000",
+                shadowOpacity: 0.3,
+                shadowRadius: 12,
+                shadowOffset: { width: 0, height: 8 },
+                elevation: 6,
               }}
             >
-              {applyLabel}
-            </RNText>
+              <RNText
+                numberOfLines={1}
+                style={{
+                  color: colors.bg.primary,
+                  fontSize: 20,
+                  lineHeight: 24,
+                  fontFamily: families.bold,
+                  includeFontPadding: false,
+                  textTransform: "uppercase",
+                  textAlign: "center",
+                }}
+              >
+                {applyLabel}
+              </RNText>
+            </View>
           </Pressable>
         </View>
       </View>
