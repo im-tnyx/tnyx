@@ -1,0 +1,41 @@
+cd G:\Tnyx\apps\mobile
+pnpm start -- --host tunnel --clear
+
+
+
+Future में project move करना हो तो **`node_modules` move/copy मत करना**. बाकी source files move कर दो:
+
+```text
+apps/
+packages/
+package.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+turbo.json
+tsconfig.json
+.env files
+```
+
+Move के बाद new location पर बस root से चलाओ:
+
+```powershell
+cd G:\Tnyx
+pnpm install
+```
+
+`pnpm install` automatically नया `node_modules` बना देगा और dependencies install/link कर देगा.
+
+Best practice:
+
+```powershell
+# move करने से पहले old project में
+Remove-Item -Recurse -Force .\node_modules -ErrorAction SilentlyContinue
+
+# फिर folder move करो
+
+# new location में
+cd G:\Tnyx
+pnpm install
+```
+
+एक और important बात: `pnpm-lock.yaml` जरूर साथ move करना. इससे same versions install होंगे और dependency tree stable रहेगा.
