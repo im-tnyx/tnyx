@@ -8,6 +8,12 @@ Current phase:
 - mock data only
 - no backend logic
 
+## Execution Alignment
+
+- Follow milestone and scope guardrails from root `MASTER_EXECUTION_PLAN.md`.
+- If any conflict appears between docs, resolve by:
+  `MASTER_EXECUTION_PLAN -> FEATURE_ROADMAP -> MONOREPO_STRUCTURE -> this document`.
+
 ## 1) Motion Philosophy
 
 Motion should feel:

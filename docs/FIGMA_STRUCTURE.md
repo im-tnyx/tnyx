@@ -9,6 +9,13 @@ Current scope:
 - no backend integration
 - no watch app design system in this phase
 
+## Execution Alignment
+
+- Figma output in v0.1 must map directly to the mobile implementation scope in `MASTER_EXECUTION_PLAN.md`.
+- Design handoff should never bypass `DESIGN_TOKENS.md` and `SCREEN_INVENTORY.md`.
+- Conflict priority:
+  `MASTER_EXECUTION_PLAN -> FEATURE_ROADMAP -> DESIGN_TOKENS -> this document`.
+
 ## 1) Figma Goal
 
 Figma must produce implementation-ready mobile screens that map directly to:

@@ -2,6 +2,13 @@
 
 You are building production-grade mobile UI for TNYX.
 
+## Execution Alignment
+
+- Follow root `MASTER_EXECUTION_PLAN.md` and `docs/FEATURE_ROADMAP.md`.
+- Current phase is Milestone A (UI Foundation): mobile UI only, mock data only, no backend integration.
+- If prompt instructions conflict, resolve by:
+  `MASTER_EXECUTION_PLAN -> FEATURE_ROADMAP -> SCREEN_INVENTORY -> NAVIGATION_STRUCTURE -> DESIGN_TOKENS`.
+
 ## Product Context
 
 TNYX is an AI-first health and fitness platform, not a generic chat app.
@@ -16,7 +23,7 @@ Mobile experiences should prioritize workout flow speed, nutrition logging clari
 - Tamagui
 - React Native Reanimated
 - Zustand (local app state)
-- React Query (remote/API state)
+- React Query package may exist, but do not wire real API clients in v0.1.
 
 ## Core UI Direction
 
@@ -33,6 +40,7 @@ Mobile experiences should prioritize workout flow speed, nutrition logging clari
 - Functional components only
 - No inline hardcoded color values
 - Use design tokens for color, spacing, radius, typography, and elevation
+- Do not add backend/auth/persistence implementation in generated UI files
 - Avoid oversized component files; split by responsibility
 - Every screen must define loading, empty, error, and success states
 - Accessibility support is required (labels, contrast, touch targets)

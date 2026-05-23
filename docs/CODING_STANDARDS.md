@@ -8,6 +8,13 @@ Current scope:
 - mock data only
 - no backend integration
 
+## Execution Alignment
+
+- Follow milestone sequencing in `MASTER_EXECUTION_PLAN.md`.
+- In v0.1, do not introduce backend or persistence behavior in UI modules.
+- Conflict priority:
+  `MASTER_EXECUTION_PLAN -> FEATURE_ROADMAP -> MONOREPO_STRUCTURE -> this document`.
+
 ## 1) Core Principles
 
 Code should be:

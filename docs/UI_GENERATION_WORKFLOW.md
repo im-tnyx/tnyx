@@ -8,6 +8,13 @@ Scope:
 - mock data only
 - no backend/API/auth implementation
 
+## Execution Alignment
+
+- This workflow is locked to Milestone A (UI Foundation) in `MASTER_EXECUTION_PLAN.md`.
+- Do not extend generation into backend/service concerns in this phase.
+- Conflict priority:
+  `MASTER_EXECUTION_PLAN -> FEATURE_ROADMAP -> SCREEN_INVENTORY -> this document`.
+
 ## 1) Workflow Goal
 
 Ensure every generated screen is:

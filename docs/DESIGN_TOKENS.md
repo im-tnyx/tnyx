@@ -8,6 +8,13 @@ Hard rule:
 
 - no hardcoded visual values inside production UI components or screens.
 
+## Execution Alignment
+
+- Token contract is mandatory for all v0.1 UI implementation work.
+- Keep token names theme-extensible for future web/admin/watch surfaces.
+- Conflict priority:
+  `MASTER_EXECUTION_PLAN -> FEATURE_ROADMAP -> this document -> DESIGN_SYSTEM`.
+
 ## 1) Token Philosophy
 
 Tokens must provide:

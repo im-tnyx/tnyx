@@ -9,6 +9,25 @@ This document defines the initial scalable folder strategy for TNYX.
 - Prevent contract drift across mobile, backend, web, and admin
 - Support long-term maintainability and team parallelism
 
+## Current vs Target
+
+Current repository implementation (today):
+
+- `apps/mobile` active
+- `docs/` active
+- root workspace files active (`pnpm-workspace.yaml`, `turbo.json`, `package.json`)
+
+Target structure in this document:
+
+- phased expansion path for `apps`, `packages`, `infra`, and `database`
+- modules should be created only when their milestone in `MASTER_EXECUTION_PLAN.md` starts
+
+## Execution Alignment
+
+- Use this file as the structural target map, not a forced immediate scaffold checklist.
+- Activate folders by milestone readiness from `MASTER_EXECUTION_PLAN.md`.
+- In current phase, keep delivery focused on `apps/mobile` + docs quality.
+
 ## Top-Level Structure
 
 ```txt
