@@ -158,7 +158,7 @@ export function AppTopBar() {
             >
               <Image
                 source={require("../../assets/fire_streak.png")}
-                style={{ width: 25, height: 25 }}
+                style={{ width: 24, height: 24 }}
                 resizeMode="contain"
               />
               {hasStreakCount ? (
@@ -170,8 +170,8 @@ export function AppTopBar() {
                       android: "sans-serif-medium",
                       default: "System",
                     }),
-                    fontSize: 17,
-                    lineHeight: 17,
+                    fontSize: 20,
+                    lineHeight: 20,
                     includeFontPadding: false,
                     textAlignVertical: "center",
                     paddingVertical: 0,
