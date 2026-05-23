@@ -25,17 +25,16 @@ function FeatureItem({ title, icon }: FeatureItemProps) {
       style={({ pressed }) => ({
         width: "100%",
         minHeight: 86,
-        marginTop: spacing[3],
         borderRadius: radius.lg,
-        backgroundColor: "#111622",
-        borderWidth: 1,
-        borderColor: "rgba(255,255,255,0.22)",
+        backgroundColor: "rgba(16, 23, 38, 0.98)",
+        borderWidth: 1.5,
+        borderColor: "#B8FF3D",
         opacity: pressed ? 0.92 : 1,
         shadowColor: "#000000",
-        shadowOpacity: 0.92,
+        shadowOpacity: 0.45,
         shadowRadius: 12,
         shadowOffset: { width: 0, height: 8 },
-        elevation: 5,
+        elevation: 8,
         justifyContent: "center",
         paddingHorizontal: spacing[4],
       })}
@@ -95,7 +94,7 @@ export default function WelcomeScreen() {
 
   const currentLanguage: LanguageCode = mode === "hi" ? "hi" : "en";
   const languageLabel = currentLanguage.toUpperCase();
-  const isSmallWidth = width < 180;
+  const isSmallWidth = width < 380;
   const heroFontSize = isSmallWidth ? 30 : 44;
   const heroLineHeight = isSmallWidth ? 42 : 50;
   const heroTopMargin = height < 760 ? spacing[10] : spacing[10] + 100;
@@ -144,6 +143,7 @@ export default function WelcomeScreen() {
       </View>
 
       <ScrollView
+        style={{ zIndex: 1 }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           flexGrow: 1,
@@ -268,7 +268,7 @@ export default function WelcomeScreen() {
           </RNText>
         </View>
 
-        <View style={{ marginTop: spacing[6] }}>
+        <View style={{ marginTop: spacing[6], gap: spacing[3] }}>
           <FeatureItem title={t("welcomeFeature1")} icon="camera" />
           <FeatureItem title={t("welcomeFeature2")} icon="workout" />
           <FeatureItem title={t("welcomeFeature3")} icon="ai" />
@@ -279,24 +279,26 @@ export default function WelcomeScreen() {
             accessibilityRole="button"
             onPress={() => router.replace("/(tabs)/home")}
             style={({ pressed }) => ({
-              height: 62,
+              height: 55,
               borderRadius: radius.full,
               backgroundColor: "#B8FF3D",
+              borderWidth: 2,
+              borderColor: "rgba(255,255,255,0.75)",
               opacity: pressed ? 0.9 : 1,
               justifyContent: "center",
               
-              shadowColor: "#ffffff",
+              shadowColor: "#000000",
               shadowOpacity: 0.35,
               shadowRadius: 18,
               shadowOffset: { width: 0, height: 10 },
-              elevation: 6,
+              elevation: 8,
             })}
           >
             <View pointerEvents="none" style={{ width: "100%", alignItems: "center", justifyContent: "center" }}>
               <RNText
                 numberOfLines={1}
                 style={{
-                  color: colors.bg.primary,
+                  color: "#B8FF3D",
                   fontSize: 18,
                   lineHeight: 24,
                   fontWeight: "900",
@@ -306,7 +308,7 @@ export default function WelcomeScreen() {
                 {t("welcomeGetStarted")}
               </RNText>
               <View style={{ position: "absolute", right: spacing[5] }}>
-                <ArrowRight color={colors.bg.primary} size={25} />
+                <ArrowRight color={"#B8FF3D"} size={25} />
               </View>
             </View>
           </Pressable>
@@ -315,15 +317,15 @@ export default function WelcomeScreen() {
   accessibilityRole="button"
   onPress={() => router.push("/profile")}
   style={({ pressed }) => ({
-    marginTop: spacing[3],
+    marginTop: spacing[12],
     height: 56,
     width: "80%",
     alignSelf: "center",
     borderRadius: radius.full,
 
-    backgroundColor: "transparent",
+    backgroundColor: "rgba(5, 8, 14, 0.72)",
     borderWidth: 2,
-    elevation: 1,
+    elevation: 2,
     borderColor: "#B8FF3D",
 
     alignItems: "center",
@@ -351,7 +353,7 @@ export default function WelcomeScreen() {
         <View 
           style={{ 
             marginTop: "auto",
-            paddingTop: spacing[6], 
+            paddingTop: spacing[8], 
             alignItems: "center", 
             paddingHorizontal: spacing[4] }}>
           <RNText
