@@ -33,15 +33,15 @@ function FeatureItem({ title, icon }: FeatureItemProps) {
         opacity: pressed ? 0.92 : 1,
         shadowColor: "#000000",
         shadowOpacity: 0.32,
-        shadowRadius: 14,
+        shadowRadius: 12,
         shadowOffset: { width: 0, height: 8 },
         elevation: 5,
       })}
     >
       <View
         style={{
-          width: 52,
-          height: 52,
+          width: 40,
+          height: 40,
           borderRadius: radius.lg,
           backgroundColor: "rgba(255,255,255,0.05)",
           alignItems: "center",
@@ -70,8 +70,8 @@ export default function WelcomeScreen() {
   const { width } = useWindowDimensions();
 
   const languageLabel = mode === "system" ? "SYS" : mode.toUpperCase();
-  const heroFontSize = width < 370 ? 52 : 60;
-  const heroLineHeight = width < 370 ? 54 : 62;
+  const heroFontSize = width < 350 ? 46 : 54; // Text overlaps standard screen width if too large
+  const heroLineHeight = width < 350 ? 50 : 58;
 
   const toggleLanguage = () => {
     if (mode === "en") {
@@ -88,37 +88,43 @@ export default function WelcomeScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg.primary }}>
       <StatusBar style="light" />
-      <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}>
+      
+      {/* Background Container - Purely behind everything */}
+      <View style={{ ...style.absoluteFill, zIndex: -1 }}>
         <ImageBackground
           source={require("../../assets/welcome_hero.png")}
           resizeMode="cover"
           style={{ flex: 1 }}
           imageStyle={{ opacity: 0.94 }}
         >
+          {/* Top dark overlay to blend the image */}
           <View style={{ flex: 1, backgroundColor: "rgba(5, 8, 14, 0.58)" }} />
         </ImageBackground>
+        
+        {/* Bottom solid-to-gradient background for text readability */}
         <View
           style={{
             position: "absolute",
             left: 0,
             right: 0,
             bottom: 0,
-            height: "54%",
+            height: "15%", // Increased height to make sure text is fully readable
             backgroundColor: colors.bg.primary,
-            opacity: 0.85,
+            opacity: 0.92,
           }}
         />
       </View>
 
+      {/* Main Content ScrollView - Normal layout without absolute positioning */}
       <ScrollView
-        style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingHorizontal: spacing[4],
-          paddingTop: spacing[4],
-          paddingBottom: spacing[8],
+          paddingTop: spacing[2],
+          paddingBottom: spacing[10], // Added extra bottom padding for spacing below terms
         }}
       >
+        {/* Header Options */}
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: spacing[2] }}>
           <Pressable
             onPress={toggleLanguage}
@@ -150,76 +156,78 @@ export default function WelcomeScreen() {
           </Pressable>
         </View>
 
-        <View style={{ marginTop: spacing[12] + spacing[1] }}>
-          <Text variant="hero" style={{ fontSize: heroFontSize, lineHeight: heroLineHeight }}>
+        {/* Hero Headline Section */}
+        <View style={{ marginTop: spacing[10] }}>
+          <Text variant="hero" style={{ fontSize: heroFontSize, lineHeight: heroLineHeight, fontWeight: "800" }}>
             {t("welcomeHeadlineLine1")}
           </Text>
-          <Text variant="hero" style={{ fontSize: heroFontSize, lineHeight: heroLineHeight, marginTop: spacing[1] }}>
+          <Text variant="hero" style={{ fontSize: heroFontSize, lineHeight: heroLineHeight, fontWeight: "800", marginTop: spacing[1] }}>
             {t("welcomeHeadlineLine2Start")}
-            <Text variant="hero" style={{ color: colors.accent.nutrition, fontSize: heroFontSize, lineHeight: heroLineHeight }}>
+            <Text variant="hero" style={{ color: colors.accent.nutrition, fontSize: heroFontSize, lineHeight: heroLineHeight, fontWeight: "800" }}>
               {t("welcomeHeadlineLine2Accent")}
             </Text>
           </Text>
-          <Text variant="hero" style={{ fontSize: heroFontSize, lineHeight: heroLineHeight, marginTop: spacing[1] }}>
+          <Text variant="hero" style={{ fontSize: heroFontSize, lineHeight: heroLineHeight, fontWeight: "800", marginTop: spacing[1] }}>
             {t("welcomeHeadlineLine3")}
           </Text>
 
-          <View style={{ marginTop: spacing[4] + spacing[1] }}>
-            <Text variant="body" style={{ color: colors.text.secondary, fontSize: 18, lineHeight: 28 }}>
-              {t("welcomeSubtextLine1")}
-            </Text>
-            <Text variant="body" style={{ color: colors.text.secondary, fontSize: 18, lineHeight: 28 }}>
-              {t("welcomeSubtextLine2")}
+          <View style={{ marginTop: spacing[4] }}>
+            <Text variant="body" style={{ color: colors.text.secondary, fontSize: 16, lineHeight: 24 }}>
+              {t("welcomeSubtextLine1")} {t("welcomeSubtextLine2")}
             </Text>
           </View>
         </View>
 
-        <View style={{ marginTop: spacing[4] + spacing[2] }}>
+        {/* Features List */}
+        <View style={{ marginTop: spacing[6] }}>
           <FeatureItem title={t("welcomeFeature1")} icon="camera" />
           <FeatureItem title={t("welcomeFeature2")} icon="workout" />
           <FeatureItem title={t("welcomeFeature3")} icon="ai" />
         </View>
 
-        <Pressable
-          onPress={() => router.replace("/(tabs)/home")}
-          style={({ pressed }) => ({
-            marginTop: spacing[4],
-            height: 68,
-            borderRadius: radius.full,
-            backgroundColor: colors.accent.nutrition,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            opacity: pressed ? 0.92 : 1,
-          })}
-        >
-          <Text variant="title" style={{ color: colors.bg.primary, fontWeight: "700", fontSize: 38 / 2 }}>
-            {t("welcomeGetStarted")}
-          </Text>
-          <View style={{ position: "absolute", right: spacing[5] }}>
-            <ArrowRight color={colors.bg.primary} size={28} />
-          </View>
-        </Pressable>
+        {/* Action Buttons */}
+        <View style={{ marginTop: spacing[6] }}>
+          <Pressable
+            onPress={() => router.replace("/(tabs)/home")}
+            style={({ pressed }) => ({
+              height: 62,
+              borderRadius: radius.full,
+              backgroundColor: colors.accent.nutrition,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              opacity: pressed ? 0.92 : 1,
+            })}
+          >
+            <Text variant="title" style={{ color: colors.bg.primary, fontWeight: "700", fontSize: 18 }}>
+              {t("welcomeGetStarted")}
+            </Text>
+            <View style={{ position: "absolute", right: spacing[5] }}>
+              <ArrowRight color={colors.bg.primary} size={24} />
+            </View>
+          </Pressable>
 
-        <Pressable
-          onPress={() => router.push("/profile")}
-          style={({ pressed }) => ({
-            marginTop: spacing[3],
-            height: 56,
-            borderRadius: radius.full,
-            backgroundColor: "rgba(19, 24, 35, 0.84)",
-            borderWidth: 1,
-            borderColor: "rgba(255,255,255,0.15)",
-            alignItems: "center",
-            justifyContent: "center",
-            opacity: pressed ? 0.92 : 1,
-          })}
-        >
-          <Text variant="title">{t("welcomeSignIn")}</Text>
-        </Pressable>
+          <Pressable
+            onPress={() => router.push("/profile")}
+            style={({ pressed }) => ({
+              marginTop: spacing[3],
+              height: 56,
+              borderRadius: radius.full,
+              backgroundColor: "rgba(19, 24, 35, 0.84)",
+              borderWidth: 1,
+              borderColor: "rgba(255,255,255,0.15)",
+              alignItems: "center",
+              justifyContent: "center",
+              opacity: pressed ? 0.92 : 1,
+            })}
+          >
+            <Text variant="title" style={{ fontWeight: "600", fontSize: 16 }}>{t("welcomeSignIn")}</Text>
+          </Pressable>
+        </View>
 
-        <View style={{ marginTop: spacing[4], marginBottom: spacing[2], alignItems: "center", paddingHorizontal: spacing[2] }}>
-          <Text variant="caption" style={{ textAlign: "center" }}>
+        {/* Terms and Privacy Footer */}
+        <View style={{ marginTop: spacing[6], alignItems: "center", paddingHorizontal: spacing[2] }}>
+          <Text variant="caption" style={{ textAlign: "center", color: colors.text.muted, lineHeight: 18 }}>
             {t("welcomeAgreementPrefix")}
             <Text variant="caption" style={{ color: colors.accent.nutrition }}>
               {t("welcomeTerms")}
@@ -235,3 +243,13 @@ export default function WelcomeScreen() {
     </SafeAreaView>
   );
 }
+
+const style = {
+  absoluteFill: {
+    position: "absolute" as const,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  }
+};
