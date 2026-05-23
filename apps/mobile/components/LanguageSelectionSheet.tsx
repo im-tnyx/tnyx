@@ -78,7 +78,7 @@ export function LanguageSelectionSheet({
             borderColor: "rgba(255,255,255,0.12)",
             paddingHorizontal: spacing[4],
             paddingTop: spacing[3],
-            paddingBottom: Math.max(insets.bottom, spacing[4]) + spacing[2],
+            paddingBottom: Math.max(insets.bottom, spacing[4]) + spacing[12],
           }}
         >
           <View
@@ -120,8 +120,8 @@ export function LanguageSelectionSheet({
               onPress={onDismiss}
               hitSlop={10}
               style={{
-                width: 38,
-                height: 38,
+                width: 32,
+                height: 32,
                 borderRadius: radius.full,
                 alignItems: "center",
                 justifyContent: "center",
@@ -133,7 +133,7 @@ export function LanguageSelectionSheet({
             </Pressable>
           </View>
 
-          <View style={{ width: "100%", marginTop: spacing[2] }}>
+          <View style={{ width: "100%", marginTop: spacing[4] }}>
             {LANGUAGE_OPTIONS.map((language) => {
               const isSelected = draftLanguage === language.code;
 
@@ -149,7 +149,7 @@ export function LanguageSelectionSheet({
                     borderRadius: radius.lg,
                     borderWidth: isSelected ? 2 : 1,
                     borderColor: isSelected ? colors.accent.nutrition : "rgba(255,255,255,0.14)",
-                    backgroundColor: isSelected ? "rgba(141, 255, 184, 0.12)" : "rgba(255,255,255,0.06)",
+                    backgroundColor: isSelected ? "rgba(100, 133, 113, 0.12)" : "rgba(255,255,255,0.06)",
                     marginTop: spacing[3],
                     paddingHorizontal: spacing[4],
                     opacity: pressed ? 0.9 : 1,
@@ -174,7 +174,7 @@ export function LanguageSelectionSheet({
                       {language.flag}
                     </RNText>
 
-                    <View style={{ flex: 1, minWidth: 0, marginLeft: spacing[3], marginRight: spacing[3] }}>
+                    <View style={{ flex: 1, minWidth: 0, marginLeft: spacing[4], marginRight: spacing[4] }}>
                       <RNText
                         numberOfLines={1}
                         style={{
@@ -190,7 +190,7 @@ export function LanguageSelectionSheet({
                       <RNText
                         numberOfLines={1}
                         style={{
-                          marginTop: 4,
+                          marginTop: 6,
                           color: colors.text.muted,
                           fontSize: 13,
                           lineHeight: 17,
@@ -198,14 +198,14 @@ export function LanguageSelectionSheet({
                           includeFontPadding: false,
                         }}
                       >
-                        {language.subtitle}
+                        
                       </RNText>
                     </View>
 
                     <View
                       style={{
-                        width: 30,
-                        height: 30,
+                        width: 40,
+                        height: 40,
                         alignItems: "center",
                         justifyContent: "center",
                         flexShrink: 0,
@@ -240,11 +240,13 @@ export function LanguageSelectionSheet({
             <RNText
               numberOfLines={1}
               style={{
-                color: colors.bg.primary,
-                fontSize: 17,
+                color: "rgb(255, 255, 255)",
+                fontSize: 22,
                 lineHeight: 22,
                 fontWeight: "900",
                 includeFontPadding: false,
+                textTransform: "uppercase",
+                textAlign: "center",
               }}
             >
               {applyLabel}
