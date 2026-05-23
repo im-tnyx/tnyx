@@ -2,6 +2,13 @@
 
 This document defines route hierarchy, navigation behavior, and flow architecture for TNYX mobile applications.
 
+## Execution Alignment
+
+- This document follows Milestone A scope from `MASTER_EXECUTION_PLAN.md`.
+- Keep route contracts aligned with current v0.1 implementation before adding expansion-only routes.
+- Conflict priority:
+  `MASTER_EXECUTION_PLAN -> FEATURE_ROADMAP -> this document -> SCREEN_INVENTORY`.
+
 ## 1) Navigation Goals
 
 Navigation should feel:
@@ -140,6 +147,14 @@ Rules:
 Primary navigation method:
 
 - bottom tabs
+
+Current v0.1 implementation tabs:
+
+- `home`
+- `nutrition`
+- `ai`
+- `workout`
+- `progress`
 
 Tabs:
 

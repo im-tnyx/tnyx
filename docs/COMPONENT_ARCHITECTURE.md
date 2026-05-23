@@ -9,6 +9,13 @@ Current phase:
 - no backend logic
 - no API integration
 
+## Execution Alignment
+
+- Component layer decisions must match current milestone gates in `MASTER_EXECUTION_PLAN.md`.
+- v0.1 remains UI-only and mock-first.
+- Conflict priority:
+  `MASTER_EXECUTION_PLAN -> FEATURE_ROADMAP -> MONOREPO_STRUCTURE -> this document`.
+
 ## 1) Architecture Goals
 
 The component system must support:

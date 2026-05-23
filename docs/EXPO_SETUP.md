@@ -11,6 +11,13 @@ Scope:
 - no auth implementation
 - no persistence layer
 
+## Execution Alignment
+
+- This setup contract applies to Milestone A (UI Foundation) in `MASTER_EXECUTION_PLAN.md`.
+- Keep `apps/mobile` as the active implementation surface in this phase.
+- Conflict priority:
+  `MASTER_EXECUTION_PLAN -> FEATURE_ROADMAP -> this document`.
+
 ## 1) Setup Goals
 
 The setup must ensure:

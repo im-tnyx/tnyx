@@ -18,6 +18,13 @@ This document is the master reference for:
 - reusable component identification
 - state coverage requirements
 
+## Execution Alignment
+
+- Inventory execution follows Milestone A in `MASTER_EXECUTION_PLAN.md`.
+- Current implemented tab shell for v0.1:
+  `home`, `nutrition`, `ai`, `workout`, `progress`.
+- Additional listed routes may remain planned inventory until their implementation batch starts.
+
 ## 1) Screen State Requirements
 
 Every production screen must define support for:

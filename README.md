@@ -45,6 +45,12 @@ Scope for initial milestone:
 
 Backend integration is intentionally deferred until UI and contracts stabilize.
 
+## Execution Plan
+
+Primary delivery sequence and milestone gates are defined in:
+
+- [`MASTER_EXECUTION_PLAN.md`](C:/Users/SANTOSH/OneDrive/Tnyx/MASTER_EXECUTION_PLAN.md)
+
 ## Repository Conventions (Initial)
 
 - TypeScript-first where applicable
@@ -57,7 +63,20 @@ Backend integration is intentionally deferred until UI and contracts stabilize.
 
 Primary docs for current phase:
 
+- [`MASTER_EXECUTION_PLAN.md`](C:/Users/SANTOSH/OneDrive/Tnyx/MASTER_EXECUTION_PLAN.md)
+- [`docs/DOC_INDEX.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/DOC_INDEX.md)
 - [`docs/MONOREPO_STRUCTURE.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/MONOREPO_STRUCTURE.md)
+- [`docs/FEATURE_ROADMAP.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/FEATURE_ROADMAP.md)
 - [`docs/PROMPTS/mobile-ui.prompt.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/PROMPTS/mobile-ui.prompt.md)
+- [`docs/DESIGN_SYSTEM.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/DESIGN_SYSTEM.md)
+- [`docs/DESIGN_TOKENS.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/DESIGN_TOKENS.md)
+- [`docs/NAVIGATION_STRUCTURE.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/NAVIGATION_STRUCTURE.md)
+- [`docs/COMPONENT_ARCHITECTURE.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/COMPONENT_ARCHITECTURE.md)
+- [`docs/SCREEN_INVENTORY.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/SCREEN_INVENTORY.md)
+- [`docs/ANIMATION_GUIDELINES.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/ANIMATION_GUIDELINES.md)
+- [`docs/EXPO_SETUP.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/EXPO_SETUP.md)
+- [`docs/UI_GENERATION_WORKFLOW.md`](C:/Users/SANTOSH/OneDrive/Tnyx/docs/UI_GENERATION_WORKFLOW.md)
 
-Future docs will expand architecture, API, auth, AI, and deployment standards as implementation progresses.
+Execution priority on conflict:
+
+`MASTER_EXECUTION_PLAN -> FEATURE_ROADMAP -> MONOREPO_STRUCTURE -> feature-specific docs`

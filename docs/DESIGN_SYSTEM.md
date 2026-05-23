@@ -2,6 +2,13 @@
 
 This document defines the visual identity and UI behavior standards for TNYX across mobile, watch companion surfaces, web dashboard, and admin interfaces.
 
+## Execution Alignment
+
+- During v0.1, apply this system to Android-first mobile UI only.
+- Future web/admin/watch expansion should reuse the same semantic system and token naming.
+- Conflict priority:
+  `MASTER_EXECUTION_PLAN -> FEATURE_ROADMAP -> DESIGN_TOKENS -> this document`.
+
 ## 1) Design Philosophy
 
 TNYX should feel:
