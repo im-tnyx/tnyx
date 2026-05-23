@@ -90,7 +90,7 @@ export default function WelcomeScreen() {
       <StatusBar style="light" />
       <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}>
         <ImageBackground
-          source={require("../../assets/tnyx_logo_dark_bg.png")}
+          source={require("../../assets/welcome_hero.png")}
           resizeMode="cover"
           style={{ flex: 1 }}
           imageStyle={{ opacity: 0.94 }}
