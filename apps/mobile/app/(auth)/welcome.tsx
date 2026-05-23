@@ -1,40 +1,19 @@
 import { useEffect, useState } from "react";
-import { ImageBackground, Modal, Pressable, ScrollView, View, useWindowDimensions } from "react-native";
+import { ImageBackground, Pressable, ScrollView, View, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
 import { ArrowRight, Brain, Camera, ChevronDown, ChevronRight, Dumbbell, Globe } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { Text } from "@/components/ui";
+import { LanguageSelectionSheet, type LanguageCode } from "@/components/LanguageSelectionSheet";
 import { useAppLanguage } from "@/hooks/useAppLanguage";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { radius, spacing } from "@/theme/tokens";
-
-type AppLanguage = "en" | "hi";
 
 type FeatureItemProps = {
   title: string;
   icon: "camera" | "workout" | "ai";
 };
-
-type LanguageOption = {
-  value: AppLanguage;
-  flag: string;
-  label: string;
-  nativeLabel: string;
-};
-
-type LanguageSelectionSheetProps = {
-  visible: boolean;
-  selectedLanguage: AppLanguage;
-  onSelectLanguage: (language: AppLanguage) => void;
-  onApply: () => void;
-  onDismiss: () => void;
-};
-
-const languageOptions: LanguageOption[] = [
-  { value: "en", flag: "🇺🇸", label: "English", nativeLabel: "English" },
-  { value: "hi", flag: "🇮🇳", label: "Hindi", nativeLabel: "हिंदी" },
-];
 
 function FeatureItem({ title, icon }: FeatureItemProps) {
   const { colors } = useAppTheme();
@@ -87,148 +66,13 @@ function FeatureItem({ title, icon }: FeatureItemProps) {
   );
 }
 
-function LanguageSelectionSheet({
-  visible,
-  selectedLanguage,
-  onSelectLanguage,
-  onApply,
-  onDismiss,
-}: LanguageSelectionSheetProps) {
-  const { colors } = useAppTheme();
-  const isHindiSelected = selectedLanguage === "hi";
-
-  return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onDismiss}>
-      <View style={{ flex: 1, justifyContent: "flex-end" }}>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Close language selector"
-          onPress={onDismiss}
-          style={{ ...style.absoluteFill, backgroundColor: "rgba(0,0,0,0.56)" }}
-        />
-
-        <SafeAreaView
-          edges={["bottom"]}
-          style={{
-            backgroundColor: colors.bg.primary,
-            borderTopLeftRadius: radius.lg,
-            borderTopRightRadius: radius.lg,
-            borderWidth: 1,
-            borderColor: "rgba(255,255,255,0.12)",
-            paddingHorizontal: spacing[4],
-            paddingTop: spacing[4],
-            paddingBottom: spacing[4],
-          }}
-        >
-          <View
-            style={{
-              alignSelf: "center",
-              width: 44,
-              height: 5,
-              borderRadius: radius.full,
-              backgroundColor: "rgba(255,255,255,0.24)",
-              marginBottom: spacing[4],
-            }}
-          />
-
-          <Text variant="title" style={{ fontWeight: "700", fontSize: 22 }}>
-            {isHindiSelected ? "भाषा चुनें" : "Select language"}
-          </Text>
-
-          <View style={{ marginTop: spacing[3] }}>
-            {languageOptions.map((language) => {
-              const isSelected = selectedLanguage === language.value;
-
-              return (
-                <Pressable
-                  key={language.value}
-                  onPress={() => onSelectLanguage(language.value)}
-                  style={({ pressed }) => ({
-                    minHeight: 64,
-                    marginTop: spacing[3],
-                    borderRadius: radius.lg,
-                    backgroundColor: isSelected ? "rgba(82, 255, 168, 0.12)" : "rgba(255,255,255,0.05)",
-                    borderWidth: isSelected ? 2 : 1,
-                    borderColor: isSelected ? colors.accent.nutrition : "rgba(255,255,255,0.14)",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    paddingHorizontal: spacing[4],
-                    opacity: pressed ? 0.9 : 1,
-                  })}
-                >
-                  <Text variant="title" style={{ fontSize: 22 }}>
-                    {language.flag}
-                  </Text>
-
-                  <View style={{ flex: 1, marginLeft: spacing[3] }}>
-                    <Text
-                      variant="title"
-                      style={{
-                        color: isSelected ? colors.accent.nutrition : colors.text.secondary,
-                        fontWeight: "700",
-                        fontSize: 17,
-                      }}
-                    >
-                      {language.nativeLabel}
-                    </Text>
-                    <Text variant="caption" style={{ color: colors.text.muted, marginTop: 2 }}>
-                      {language.label}
-                    </Text>
-                  </View>
-
-                  <View
-                    style={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: 12,
-                      borderWidth: isSelected ? 0 : 1,
-                      borderColor: "rgba(255,255,255,0.35)",
-                      backgroundColor: isSelected ? colors.accent.nutrition : "transparent",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {isSelected ? (
-                      <Text variant="caption" style={{ color: colors.bg.primary, fontWeight: "800", lineHeight: 18 }}>
-                        ✓
-                      </Text>
-                    ) : null}
-                  </View>
-                </Pressable>
-              );
-            })}
-          </View>
-
-          <Pressable
-            onPress={onApply}
-            style={({ pressed }) => ({
-              height: 56,
-              marginTop: spacing[5],
-              borderRadius: radius.full,
-              backgroundColor: colors.accent.nutrition,
-              alignItems: "center",
-              justifyContent: "center",
-              opacity: pressed ? 0.92 : 1,
-            })}
-          >
-            <Text variant="title" style={{ color: colors.bg.primary, fontWeight: "700", fontSize: 17 }}>
-              {isHindiSelected ? "लागू करें" : "Apply"}
-            </Text>
-          </Pressable>
-        </SafeAreaView>
-      </View>
-    </Modal>
-  );
-}
-
 export default function WelcomeScreen() {
   const { t, mode, setMode } = useAppLanguage();
   const { colors } = useAppTheme();
   const { width } = useWindowDimensions();
-  const currentLanguage: AppLanguage = mode === "hi" ? "hi" : "en";
-  const [isLanguageSheetVisible, setIsLanguageSheetVisible] = useState(false);
-  const [draftLanguage, setDraftLanguage] = useState<AppLanguage>(currentLanguage);
 
+  const [isLanguageSheetVisible, setIsLanguageSheetVisible] = useState(false);
+  const currentLanguage: LanguageCode = mode === "hi" ? "hi" : "en";
   const languageLabel = currentLanguage.toUpperCase();
   const heroFontSize = width < 350 ? 46 : 54; // Text overlaps standard screen width if too large
   const heroLineHeight = width < 350 ? 50 : 58;
@@ -239,20 +83,10 @@ export default function WelcomeScreen() {
     }
   }, [mode, setMode]);
 
-  const openLanguageSheet = () => {
-    setDraftLanguage(currentLanguage);
-    setIsLanguageSheetVisible(true);
-  };
-
-  const applyLanguage = () => {
-    setMode(draftLanguage);
-    setIsLanguageSheetVisible(false);
-  };
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg.primary }}>
       <StatusBar style="light" />
-
+      
       {/* Background Container - Purely behind everything */}
       <View style={{ ...style.absoluteFill, zIndex: -1 }}>
         <ImageBackground
@@ -264,7 +98,7 @@ export default function WelcomeScreen() {
           {/* Top dark overlay to blend the image */}
           <View style={{ flex: 1, backgroundColor: "rgba(5, 8, 14, 0.58)" }} />
         </ImageBackground>
-
+        
         {/* Bottom solid-to-gradient background for text readability */}
         <View
           style={{
@@ -291,7 +125,7 @@ export default function WelcomeScreen() {
         {/* Header Options */}
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: spacing[2] }}>
           <Pressable
-            onPress={openLanguageSheet}
+            onPress={() => setIsLanguageSheetVisible(true)}
             style={({ pressed }) => ({
               height: 42,
               minWidth: 92,
@@ -385,9 +219,7 @@ export default function WelcomeScreen() {
               opacity: pressed ? 0.92 : 1,
             })}
           >
-            <Text variant="title" style={{ fontWeight: "600", fontSize: 16 }}>
-              {t("welcomeSignIn")}
-            </Text>
+            <Text variant="title" style={{ fontWeight: "600", fontSize: 16 }}>{t("welcomeSignIn")}</Text>
           </Pressable>
         </View>
 
@@ -409,10 +241,12 @@ export default function WelcomeScreen() {
 
       <LanguageSelectionSheet
         visible={isLanguageSheetVisible}
-        selectedLanguage={draftLanguage}
-        onSelectLanguage={setDraftLanguage}
-        onApply={applyLanguage}
+        selectedLanguage={currentLanguage}
         onDismiss={() => setIsLanguageSheetVisible(false)}
+        onApplyLanguage={(language) => {
+          setMode(language);
+          setIsLanguageSheetVisible(false);
+        }}
       />
     </SafeAreaView>
   );
@@ -425,5 +259,5 @@ const style = {
     left: 0,
     right: 0,
     bottom: 0,
-  },
+  }
 };
