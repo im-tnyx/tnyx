@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { ImageBackground, Pressable, ScrollView, View, useWindowDimensions } from "react-native";
+import { ImageBackground, Pressable, ScrollView, Text as RNText, View, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
 import { ArrowRight, Brain, Camera, ChevronDown, ChevronRight, Dumbbell, Globe } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { Text } from "@/components/ui";
 import { LanguageSelectionSheet, type LanguageCode } from "@/components/LanguageSelectionSheet";
 import { useAppLanguage } from "@/hooks/useAppLanguage";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -17,51 +16,72 @@ type FeatureItemProps = {
 
 function FeatureItem({ title, icon }: FeatureItemProps) {
   const { colors } = useAppTheme();
-
   const Icon = icon === "camera" ? Camera : icon === "workout" ? Dumbbell : Brain;
 
   return (
     <Pressable
+      accessibilityRole="button"
       style={({ pressed }) => ({
+        width: "100%",
         minHeight: 86,
         marginTop: spacing[3],
         borderRadius: radius.lg,
         backgroundColor: "rgba(17, 22, 34, 0.86)",
         borderWidth: 1,
         borderColor: "rgba(255,255,255,0.12)",
-        flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: spacing[4],
         opacity: pressed ? 0.92 : 1,
         shadowColor: "#000000",
         shadowOpacity: 0.32,
         shadowRadius: 12,
         shadowOffset: { width: 0, height: 8 },
         elevation: 5,
+        justifyContent: "center",
+        paddingHorizontal: spacing[4],
       })}
     >
       <View
+        pointerEvents="none"
         style={{
-          width: 40,
-          height: 40,
-          borderRadius: radius.lg,
-          backgroundColor: "rgba(255,255,255,0.05)",
+          width: "100%",
+          flexDirection: "row",
           alignItems: "center",
-          justifyContent: "center",
-          borderWidth: 1,
-          borderColor: "rgba(255,255,255,0.16)",
         }}
       >
-        <Icon color={colors.accent.nutrition} size={24} />
-      </View>
+        <View
+          style={{
+            width: 52,
+            height: 52,
+            borderRadius: radius.lg,
+            backgroundColor: "rgba(255,255,255,0.06)",
+            alignItems: "center",
+            justifyContent: "center",
+            borderWidth: 1,
+            borderColor: "rgba(255,255,255,0.16)",
+            flexShrink: 0,
+          }}
+        >
+          <Icon color={colors.accent.nutrition} size={27} />
+        </View>
 
-      <View style={{ flex: 1, marginLeft: spacing[4] }}>
-        <Text variant="body" style={{ fontWeight: "600", fontSize: 34 / 2, lineHeight: 23 }}>
+        <RNText
+          numberOfLines={2}
+          style={{
+            flex: 1,
+            minWidth: 0,
+            marginLeft: spacing[4],
+            marginRight: spacing[3],
+            color: colors.text.primary,
+            fontSize: 17,
+            lineHeight: 23,
+            fontWeight: "700",
+            includeFontPadding: false,
+          }}
+        >
           {title}
-        </Text>
-      </View>
+        </RNText>
 
-      <ChevronRight color={colors.text.muted} size={22} />
+        <ChevronRight color={colors.text.muted} size={22} />
+      </View>
     </Pressable>
   );
 }
@@ -69,13 +89,15 @@ function FeatureItem({ title, icon }: FeatureItemProps) {
 export default function WelcomeScreen() {
   const { t, mode, setMode } = useAppLanguage();
   const { colors } = useAppTheme();
-  const { width } = useWindowDimensions();
-
+  const { width, height } = useWindowDimensions();
   const [isLanguageSheetVisible, setIsLanguageSheetVisible] = useState(false);
+
   const currentLanguage: LanguageCode = mode === "hi" ? "hi" : "en";
   const languageLabel = currentLanguage.toUpperCase();
-  const heroFontSize = width < 350 ? 46 : 54; // Text overlaps standard screen width if too large
-  const heroLineHeight = width < 350 ? 50 : 58;
+  const isSmallWidth = width < 380;
+  const heroFontSize = isSmallWidth ? 42 : 52;
+  const heroLineHeight = isSmallWidth ? 48 : 58;
+  const heroTopMargin = height < 760 ? spacing[8] : spacing[10];
 
   useEffect(() => {
     if (mode === "system") {
@@ -86,45 +108,49 @@ export default function WelcomeScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg.primary }}>
       <StatusBar style="light" />
-      
-      {/* Background Container - Purely behind everything */}
+
       <View style={{ ...style.absoluteFill, zIndex: -1 }}>
         <ImageBackground
           source={require("../../assets/welcome_hero.png")}
           resizeMode="cover"
           style={{ flex: 1 }}
-          imageStyle={{ opacity: 0.94 }}
+          imageStyle={{ opacity: 0.96 }}
         >
-          {/* Top dark overlay to blend the image */}
-          <View style={{ flex: 1, backgroundColor: "rgba(5, 8, 14, 0.58)" }} />
+          <View style={{ flex: 1, backgroundColor: "rgba(5, 8, 14, 0.52)" }} />
         </ImageBackground>
-        
-        {/* Bottom solid-to-gradient background for text readability */}
+
         <View
           style={{
             position: "absolute",
             left: 0,
             right: 0,
             bottom: 0,
-            height: "15%", // Increased height to make sure text is fully readable
-            backgroundColor: colors.bg.primary,
-            opacity: 0.92,
+            height: "42%",
+            backgroundColor: "rgba(5, 8, 14, 0.52)",
           }}
         />
       </View>
 
-      {/* Main Content ScrollView - Normal layout without absolute positioning */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
+          minHeight: height,
           paddingHorizontal: spacing[4],
           paddingTop: spacing[2],
-          paddingBottom: spacing[10], // Added extra bottom padding for spacing below terms
+          paddingBottom: spacing[6],
         }}
       >
-        {/* Header Options */}
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: spacing[2] }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: spacing[2],
+          }}
+        >
           <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Open language selection"
             onPress={() => setIsLanguageSheetVisible(true)}
             style={({ pressed }) => ({
               height: 42,
@@ -133,79 +159,157 @@ export default function WelcomeScreen() {
               backgroundColor: "rgba(19, 24, 35, 0.78)",
               borderWidth: 1,
               borderColor: "rgba(255,255,255,0.18)",
-              flexDirection: "row",
-              alignItems: "center",
+              opacity: pressed ? 0.9 : 1,
               justifyContent: "center",
               paddingHorizontal: spacing[4],
-              opacity: pressed ? 0.92 : 1,
             })}
           >
-            <Globe color={colors.accent.nutrition} size={19} />
-            <Text variant="body" style={{ marginLeft: spacing[2], fontWeight: "600" }}>
-              {languageLabel}
-            </Text>
-            <ChevronDown color={colors.text.secondary} size={18} style={{ marginLeft: spacing[2] }} />
+            <View pointerEvents="none" style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+              <Globe color={colors.accent.nutrition} size={20} />
+              <RNText
+                numberOfLines={1}
+                style={{
+                  marginLeft: spacing[2],
+                  color: colors.text.primary,
+                  fontSize: 15,
+                  lineHeight: 20,
+                  fontWeight: "800",
+                  includeFontPadding: false,
+                }}
+              >
+                {languageLabel}
+              </RNText>
+              <ChevronDown color={colors.text.secondary} size={18} style={{ marginLeft: spacing[2] }} />
+            </View>
           </Pressable>
 
-          <Pressable onPress={() => router.replace("/(tabs)/home")}>
-            <Text variant="title" style={{ fontWeight: "700" }}>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => router.replace("/(tabs)/home")}
+            hitSlop={10}
+            style={({ pressed }) => ({ opacity: pressed ? 0.78 : 1, padding: spacing[2] })}
+          >
+            <RNText
+              numberOfLines={1}
+              style={{
+                color: colors.text.primary,
+                fontSize: 18,
+                lineHeight: 24,
+                fontWeight: "800",
+                includeFontPadding: false,
+              }}
+            >
               {t("welcomeSkip")}
-            </Text>
+            </RNText>
           </Pressable>
         </View>
 
-        {/* Hero Headline Section */}
-        <View style={{ marginTop: spacing[10] }}>
-          <Text variant="hero" style={{ fontSize: heroFontSize, lineHeight: heroLineHeight, fontWeight: "800" }}>
+        <View style={{ marginTop: heroTopMargin }}>
+          <RNText
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.82}
+            style={{
+              color: colors.text.primary,
+              fontSize: heroFontSize,
+              lineHeight: heroLineHeight,
+              fontWeight: "900",
+              letterSpacing: -1.2,
+              includeFontPadding: false,
+            }}
+          >
             {t("welcomeHeadlineLine1")}
-          </Text>
-          <Text variant="hero" style={{ fontSize: heroFontSize, lineHeight: heroLineHeight, fontWeight: "800", marginTop: spacing[1] }}>
-            {t("welcomeHeadlineLine2Start")}
-            <Text variant="hero" style={{ color: colors.accent.nutrition, fontSize: heroFontSize, lineHeight: heroLineHeight, fontWeight: "800" }}>
-              {t("welcomeHeadlineLine2Accent")}
-            </Text>
-          </Text>
-          <Text variant="hero" style={{ fontSize: heroFontSize, lineHeight: heroLineHeight, fontWeight: "800", marginTop: spacing[1] }}>
-            {t("welcomeHeadlineLine3")}
-          </Text>
+          </RNText>
 
-          <View style={{ marginTop: spacing[4] }}>
-            <Text variant="body" style={{ color: colors.text.secondary, fontSize: 16, lineHeight: 24 }}>
-              {t("welcomeSubtextLine1")} {t("welcomeSubtextLine2")}
-            </Text>
-          </View>
+          <RNText
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.82}
+            style={{
+              color: colors.text.primary,
+              fontSize: heroFontSize,
+              lineHeight: heroLineHeight,
+              fontWeight: "900",
+              letterSpacing: -1.2,
+              includeFontPadding: false,
+              marginTop: spacing[1],
+            }}
+          >
+            {t("welcomeHeadlineLine2Start")}
+            <RNText style={{ color: colors.accent.nutrition }}>{t("welcomeHeadlineLine2Accent")}</RNText>
+          </RNText>
+
+          <RNText
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.82}
+            style={{
+              color: colors.text.primary,
+              fontSize: heroFontSize,
+              lineHeight: heroLineHeight,
+              fontWeight: "900",
+              letterSpacing: -1.2,
+              includeFontPadding: false,
+              marginTop: spacing[1],
+            }}
+          >
+            {t("welcomeHeadlineLine3")}
+          </RNText>
+
+          <RNText
+            style={{
+              marginTop: spacing[4],
+              color: colors.text.secondary,
+              fontSize: 16,
+              lineHeight: 24,
+              fontWeight: "500",
+              includeFontPadding: false,
+            }}
+          >
+            {t("welcomeSubtextLine1")} {t("welcomeSubtextLine2")}
+          </RNText>
         </View>
 
-        {/* Features List */}
         <View style={{ marginTop: spacing[6] }}>
           <FeatureItem title={t("welcomeFeature1")} icon="camera" />
           <FeatureItem title={t("welcomeFeature2")} icon="workout" />
           <FeatureItem title={t("welcomeFeature3")} icon="ai" />
         </View>
 
-        {/* Action Buttons */}
-        <View style={{ marginTop: spacing[6] }}>
+        <View style={{ marginTop: spacing[5] }}>
           <Pressable
+            accessibilityRole="button"
             onPress={() => router.replace("/(tabs)/home")}
             style={({ pressed }) => ({
               height: 62,
               borderRadius: radius.full,
               backgroundColor: colors.accent.nutrition,
-              flexDirection: "row",
-              alignItems: "center",
+              opacity: pressed ? 0.9 : 1,
               justifyContent: "center",
-              opacity: pressed ? 0.92 : 1,
+              overflow: "hidden",
             })}
           >
-            <Text variant="title" style={{ color: colors.bg.primary, fontWeight: "700", fontSize: 18 }}>
-              {t("welcomeGetStarted")}
-            </Text>
-            <View style={{ position: "absolute", right: spacing[5] }}>
-              <ArrowRight color={colors.bg.primary} size={24} />
+            <View pointerEvents="none" style={{ width: "100%", alignItems: "center", justifyContent: "center" }}>
+              <RNText
+                numberOfLines={1}
+                style={{
+                  color: colors.bg.primary,
+                  fontSize: 18,
+                  lineHeight: 24,
+                  fontWeight: "900",
+                  includeFontPadding: false,
+                }}
+              >
+                {t("welcomeGetStarted")}
+              </RNText>
+              <View style={{ position: "absolute", right: spacing[5] }}>
+                <ArrowRight color={colors.bg.primary} size={25} />
+              </View>
             </View>
           </Pressable>
 
           <Pressable
+            accessibilityRole="button"
             onPress={() => router.push("/profile")}
             style={({ pressed }) => ({
               marginTop: spacing[3],
@@ -213,29 +317,43 @@ export default function WelcomeScreen() {
               borderRadius: radius.full,
               backgroundColor: "rgba(19, 24, 35, 0.84)",
               borderWidth: 1,
-              borderColor: "rgba(255,255,255,0.15)",
+              borderColor: "rgba(255,255,255,0.18)",
               alignItems: "center",
               justifyContent: "center",
-              opacity: pressed ? 0.92 : 1,
+              opacity: pressed ? 0.9 : 1,
             })}
           >
-            <Text variant="title" style={{ fontWeight: "600", fontSize: 16 }}>{t("welcomeSignIn")}</Text>
+            <RNText
+              numberOfLines={1}
+              style={{
+                color: colors.text.primary,
+                fontSize: 16,
+                lineHeight: 22,
+                fontWeight: "800",
+                includeFontPadding: false,
+              }}
+            >
+              {t("welcomeSignIn")}
+            </RNText>
           </Pressable>
         </View>
 
-        {/* Terms and Privacy Footer */}
-        <View style={{ marginTop: spacing[6], alignItems: "center", paddingHorizontal: spacing[2] }}>
-          <Text variant="caption" style={{ textAlign: "center", color: colors.text.muted, lineHeight: 18 }}>
+        <View style={{ marginTop: spacing[5], alignItems: "center", paddingHorizontal: spacing[2] }}>
+          <RNText
+            style={{
+              textAlign: "center",
+              color: colors.text.muted,
+              fontSize: 12,
+              lineHeight: 18,
+              fontWeight: "500",
+              includeFontPadding: false,
+            }}
+          >
             {t("welcomeAgreementPrefix")}
-            <Text variant="caption" style={{ color: colors.accent.nutrition }}>
-              {t("welcomeTerms")}
-            </Text>
+            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline" }}>{t("welcomeTerms")}</RNText>
             {t("welcomeAgreementMiddle")}
-            <Text variant="caption" style={{ color: colors.accent.nutrition }}>
-              {t("welcomePrivacy")}
-            </Text>
-            .
-          </Text>
+            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline" }}>{t("welcomePrivacy")}</RNText>.
+          </RNText>
         </View>
       </ScrollView>
 
@@ -259,5 +377,5 @@ const style = {
     left: 0,
     right: 0,
     bottom: 0,
-  }
+  },
 };
