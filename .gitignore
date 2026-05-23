@@ -1,0 +1,23 @@
+node_modules/
+.pnpm-store/
+.turbo/
+dist/
+build/
+.expo/
+.expo-shared/
+coverage/
+
+.env
+.env.*
+!.env.example
+
+*.log
+*.tmp
+*.apk
+*.aab
+
+.idea/
+.vscode/
+Thumbs.db
+Desktop.ini
+New Text Document.txt

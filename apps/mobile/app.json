@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "tnyx-mobile",
+    "slug": "tnyx-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/tnyx_logo_dark_bg.png",
+    "userInterfaceStyle": "automatic",
+    "plugins": [
+      "expo-router"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0B0F1A",
+        "foregroundImage": "./assets/tnyx_logo_dark.png",
+        "monochromeImage": "./assets/tnyx_logo_dark.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
