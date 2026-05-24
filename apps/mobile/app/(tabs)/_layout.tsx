@@ -35,6 +35,7 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: false,
         tabBarActiveTintColor: colors.accent.primary,
         tabBarInactiveTintColor: colors.text.muted,
         tabBarStyle: {
@@ -48,18 +49,14 @@ export default function TabsLayout() {
           justifyContent: "center",
           alignItems: "center",
         },
-        tabBarLabelStyle: {
-          fontSize: 11,
-          marginTop: 2,
-        },
       }}
     >
       <Tabs.Screen
         name="home"
         options={{
           title: t("tabHome"),
-          tabBarIcon: ({ color, size }) => (
-            <TabAssetIcon source={require("../../assets/ic_home.png")} color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <TabAssetIcon source={require("../../assets/ic_home.png")} color={color} size={28} />
           ),
         }}
       />
@@ -67,8 +64,8 @@ export default function TabsLayout() {
         name="nutrition"
         options={{
           title: t("tabNutrition"),
-          tabBarIcon: ({ color, size }) => (
-            <TabAssetIcon source={require("../../assets/ic_apple.png")} color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <TabAssetIcon source={require("../../assets/ic_apple.png")} color={color} size={35} />
           ),
         }}
       />
@@ -76,26 +73,25 @@ export default function TabsLayout() {
         name="ai"
         options={{
           title: t("tabAi"),
-          tabBarLabel: () => null,
-          tabBarIcon: ({ color, size, focused }) => (
+          tabBarIcon: ({ color, focused }) => (
             <View
               style={{
-                width: 42,
-                height: 42,
-                borderRadius: 21,
+                width: 46,
+                height: 46,
+                borderRadius: 23,
                 borderWidth: 1.6,
-                borderColor: focused ? colors.accent.ai : colors.bg.input,
+                borderColor: colors.accent.ai,
                 backgroundColor: colors.bg.card,
                 alignItems: "center",
                 justifyContent: "center",
-                shadowColor: focused ? colors.accent.ai : "transparent",
-                shadowOpacity: focused ? 0.35 : 0,
+                shadowColor: colors.accent.ai,
+                shadowOpacity: focused ? 0.35 : 0.18,
                 shadowRadius: 8,
                 shadowOffset: { width: 0, height: 0 },
-                elevation: focused ? 5 : 0,
+                elevation: focused ? 5 : 2,
               }}
             >
-              <Sparkles color={color} size={size} />
+              <Sparkles color={color} size={24} />
             </View>
           ),
         }}
@@ -104,8 +100,8 @@ export default function TabsLayout() {
         name="workout"
         options={{
           title: t("tabWorkout"),
-          tabBarIcon: ({ color, size }) => (
-            <TabAssetIcon source={require("../../assets/ic_muscle.png")} color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <TabAssetIcon source={require("../../assets/ic_muscle.png")} color={color} size={28} />
           ),
         }}
       />
@@ -113,8 +109,8 @@ export default function TabsLayout() {
         name="progress"
         options={{
           title: t("tabProgress"),
-          tabBarIcon: ({ color, size }) => (
-            <TabAssetIcon source={require("../../assets/ic_cup.png")} color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <TabAssetIcon source={require("../../assets/ic_cup.png")} color={color} size={32} />
           ),
         }}
       />

@@ -17,6 +17,12 @@ export function LegalDocumentModal({ visible, document, onClose }: LegalDocument
   const { families, useSystemWeight } = useAppFont();
   const insets = useSafeAreaInsets();
   const w = (weight: "500" | "600" | "700" | "800") => (useSystemWeight ? weight : undefined);
+  const backdropColor = colors.overlay.backdrop;
+  const cardBorderColor = colors.border.subtle;
+  const closeBorderColor = colors.border.strong;
+  const noteBorderColor = colors.border.soft;
+  const noteBackgroundColor = colors.surface.note;
+  const noteIconColor = colors.text.secondary;
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent>
@@ -33,7 +39,7 @@ export function LegalDocumentModal({ visible, document, onClose }: LegalDocument
           accessibilityRole="button"
           accessibilityLabel="Close legal document"
           onPress={onClose}
-          style={{ position: "absolute", left: 0, top: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.72)" }}
+          style={{ position: "absolute", left: 0, top: 0, right: 0, bottom: 0, backgroundColor: backdropColor }}
         />
 
         <View
@@ -41,9 +47,9 @@ export function LegalDocumentModal({ visible, document, onClose }: LegalDocument
             height: "94%",
             marginTop: spacing[12],
             borderRadius: 24,
-            backgroundColor: "#0D0F13",
+            backgroundColor: colors.bg.modal,
             borderWidth: 1,
-            borderColor: "rgba(255,255,255,0.12)",
+            borderColor: cardBorderColor,
             overflow: "hidden",
           }}
         >
@@ -72,19 +78,19 @@ export function LegalDocumentModal({ visible, document, onClose }: LegalDocument
                   width: 40,
                   height: 40,
                   borderRadius: 20,
-                  backgroundColor: "#E05D5D",
+                  backgroundColor: colors.accent.error,
                   borderWidth: 1.5,
-                  borderColor: "rgba(255,255,255,0.45)",
+                  borderColor: closeBorderColor,
                   alignItems: "center",
                   justifyContent: "center",
-                  shadowColor: "#E05D5D",
+                  shadowColor: colors.accent.error,
                   shadowOpacity: 0.35,
                   shadowRadius: 10,
                   shadowOffset: { width: 0, height: 2 },
                   elevation: 8,
                 }}
               >
-                <X color="#FFFFFF" size={18} strokeWidth={2.6} />
+                <X color={colors.icon.onAccent} size={18} strokeWidth={2.6} />
               </View>
             </Pressable>
           </View>
@@ -160,18 +166,18 @@ export function LegalDocumentModal({ visible, document, onClose }: LegalDocument
               <View
                 style={{
                   marginTop: spacing[5],
-                  borderRadius: 12,
-                  borderWidth: 1,
-                  borderColor: "rgba(255,255,255,0.18)",
-                  backgroundColor: "rgba(255,255,255,0.04)",
-                  paddingHorizontal: spacing[3],
-                  paddingVertical: spacing[3],
-                  flexDirection: "row",
+                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: noteBorderColor,
+                backgroundColor: noteBackgroundColor,
+                paddingHorizontal: spacing[3],
+                paddingVertical: spacing[3],
+                flexDirection: "row",
                   alignItems: "flex-start",
                   gap: spacing[3],
                 }}
               >
-                <CircleAlert color="rgba(255,255,255,0.75)" size={18} style={{ marginTop: 2 }} />
+                <CircleAlert color={noteIconColor} size={18} style={{ marginTop: 2 }} />
                 <RNText
                   style={{
                     flex: 1,

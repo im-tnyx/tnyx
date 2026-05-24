@@ -32,6 +32,15 @@ export function LanguageSelectionSheet({
   const { families } = useAppFont();
   const insets = useSafeAreaInsets();
   const [draftLanguage, setDraftLanguage] = useState<LanguageCode>(selectedLanguage);
+  const backdropColor = colors.overlay.scrim;
+  const sheetBorderColor = colors.border.subtle;
+  const handleColor = colors.border.soft;
+  const closeChipBg = colors.surface.chipMuted;
+  const cardBorderDefault = colors.border.soft;
+  const cardBgDefault = colors.surface.cardTranslucent;
+  const cardBgSelected = colors.surface.selectedTint;
+  const cardShadowColor = colors.shadow.base;
+  const applyBorderColor = colors.border.contrast;
 
   const languageOptions: LanguageOption[] = supportedLanguages.map((code) => ({
     code,
@@ -67,7 +76,7 @@ export function LanguageSelectionSheet({
             right: 0,
             bottom: 0,
             left: 0,
-            backgroundColor: "rgba(0,0,0,0.62)",
+            backgroundColor: backdropColor,
           }}
         />
 
@@ -78,7 +87,7 @@ export function LanguageSelectionSheet({
             borderTopRightRadius: radius.lg,
             backgroundColor: colors.bg.primary,
             borderTopWidth: 1,
-            borderColor: "rgba(255,255,255,0.12)",
+            borderColor: sheetBorderColor,
             paddingHorizontal: spacing[4],
             paddingTop: spacing[3],
             paddingBottom: Math.max(insets.bottom, spacing[3]) + spacing[4],
@@ -89,7 +98,7 @@ export function LanguageSelectionSheet({
               width: 44,
               height: 5,
               borderRadius: 16,
-              backgroundColor: "rgba(255,255,255,0.24)",
+              backgroundColor: handleColor,
               alignSelf: "center",
               marginBottom: spacing[4],
             }}
@@ -128,7 +137,7 @@ export function LanguageSelectionSheet({
                 borderRadius: 16,
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "rgba(255,255,255,0.08)",
+                backgroundColor: closeChipBg,
                 marginLeft: spacing[3],
                 opacity: pressed ? 0.85 : 1,
               })}
@@ -158,11 +167,11 @@ export function LanguageSelectionSheet({
                       minHeight: 56,
                       borderRadius: 16,
                       borderWidth: isSelected ? 2 : 1.2,
-                      borderColor: isSelected ? colors.accent.nutrition : "rgba(255,255,255,0.16)",
-                      backgroundColor: isSelected ? "rgba(124, 227, 139, 0.12)" : "rgba(16, 23, 38, 0.95)",
+                      borderColor: isSelected ? colors.accent.nutrition : cardBorderDefault,
+                      backgroundColor: isSelected ? cardBgSelected : cardBgDefault,
                       paddingHorizontal: spacing[4],
                       justifyContent: "center",
-                      shadowColor: "#000000",
+                      shadowColor: cardShadowColor,
                       shadowOpacity: isSelected ? 0.42 : 0.28,
                       shadowRadius: 10,
                       shadowOffset: { width: 0, height: 6 },
@@ -242,10 +251,10 @@ export function LanguageSelectionSheet({
                 borderRadius: 16,
                 backgroundColor: colors.accent.nutrition,
                 borderWidth: 2,
-                borderColor: "rgba(255,255,255,0.75)",
+                borderColor: applyBorderColor,
                 alignItems: "center",
                 justifyContent: "center",
-                shadowColor: "#000000",
+                shadowColor: cardShadowColor,
                 shadowOpacity: 0.3,
                 shadowRadius: 12,
                 shadowOffset: { width: 0, height: 8 },

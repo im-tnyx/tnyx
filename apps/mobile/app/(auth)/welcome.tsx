@@ -40,8 +40,8 @@ function FeatureItem({ title, icon, titleFontFamily, cardHeight, useSystemWeight
           borderRadius: radius.lg,
           backgroundColor: "transparent",
           borderWidth: 0.5,
-          borderColor: "#B8FF3D",
-          shadowColor: "#000000",
+          borderColor: colors.accent.nutrition,
+          shadowColor: colors.shadow.base,
           shadowOpacity: 0.45,
           shadowRadius: 12,
           shadowOffset: { width: 0, height: 8 },
@@ -67,7 +67,7 @@ function FeatureItem({ title, icon, titleFontFamily, cardHeight, useSystemWeight
             alignItems: "center",
             justifyContent: "center",
             borderWidth: 0.05,
-            borderColor: "rgba(255,255,255,0.16)",
+            borderColor: colors.border.soft,
             flexShrink: 0,
           }}
         >
@@ -102,7 +102,7 @@ function FeatureItem({ title, icon, titleFontFamily, cardHeight, useSystemWeight
 export default function WelcomeScreen() {
   const { t, mode, setMode, language } = useAppLanguage();
   const { families, useSystemWeight } = useAppFont();
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
   const { width, height } = useWindowDimensions();
   const [isLanguageSheetVisible, setIsLanguageSheetVisible] = useState(false);
   const [activeLegalType, setActiveLegalType] = useState<LegalDocumentType>("terms");
@@ -132,13 +132,19 @@ export default function WelcomeScreen() {
 
   const termsFontSize = isTinyHeight ? 11 : 12;
   const termsLineHeight = isTinyHeight ? 16 : 18;
+  const heroTopGradientColors = colors.gradient.heroTop;
+  const heroBottomGradientColors = colors.gradient.heroBottom;
+  const headerChipBg = colors.surface.chip;
+  const headerChipBorder = colors.border.soft;
+  const primaryButtonBorder = colors.border.strong;
+  const primaryButtonShadow = colors.shadow.base;
   const weightOrUndefined = (weight: "500" | "700" | "800" | "900") =>
     useSystemWeight ? weight : undefined;
   const legalDocument = legalDocumentsByLanguage[currentLanguage][activeLegalType];
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg.primary }}>
-      <StatusBar style="light" />
+      <StatusBar style={isDark ? "light" : "dark"} />
 
       <View pointerEvents="none" style={style.absoluteFill}>
         <ImageBackground
@@ -154,11 +160,7 @@ export default function WelcomeScreen() {
         >
           <LinearGradient
             pointerEvents="none"
-            colors={[
-              "rgba(5, 8, 14, 0.18)",
-              "rgba(5, 8, 14, 0.08)",
-              "rgba(5, 8, 14, 0)",
-            ]}
+            colors={heroTopGradientColors}
             locations={[0, 0.35, 1]}
             style={style.absoluteFill}
           />
@@ -166,16 +168,7 @@ export default function WelcomeScreen() {
 
         <LinearGradient
           pointerEvents="none"
-          colors={[
-            "rgba(5, 8, 14, 0)",
-            "rgba(5, 8, 14, 0.50)",
-            "rgba(5, 8, 14, 1)",
-            "rgba(5, 8, 14, 1)",
-            "rgba(5, 8, 14, 1)",
-            "rgba(5, 8, 14, 1)",
-            "rgba(5, 8, 14, 1)",
-            "rgba(5, 8, 14, 1)",
-          ]}
+          colors={heroBottomGradientColors}
           locations={[0, 0.14, 0.28, 0.42, 0.56, 0.7, 0.84, 1]}
           style={{
             position: "absolute",
@@ -212,9 +205,9 @@ export default function WelcomeScreen() {
               height: 42,
               minWidth: 92,
               borderRadius: radius.full,
-              backgroundColor: "rgba(19, 24, 35, 0.78)",
+              backgroundColor: headerChipBg,
               borderWidth: 1,
-              borderColor: "rgba(255,255,255,0.18)",
+              borderColor: headerChipBorder,
               opacity: pressed ? 0.9 : 1,
               justifyContent: "center",
               paddingHorizontal: spacing[2],
@@ -361,11 +354,11 @@ export default function WelcomeScreen() {
                 style={{
                   height: buttonHeight,
                   borderRadius: 16,
-                  backgroundColor: "#B8FF3D",
+                  backgroundColor: colors.accent.nutrition,
                   borderWidth: 1,
-                  borderColor: "rgba(255,255,255,0.75)",
+                  borderColor: primaryButtonBorder,
                   justifyContent: "center",
-                  shadowColor: "#000000",
+                  shadowColor: primaryButtonShadow,
                   shadowOpacity: 0.35,
                   shadowRadius: 18,
                   shadowOffset: { width: 0, height: 10 },
@@ -376,7 +369,7 @@ export default function WelcomeScreen() {
                   <RNText
                     numberOfLines={1}
                     style={{
-                      color: colors.bg.primary,
+                      color: colors.icon.onAccent,
                       fontSize: 18,
                       lineHeight: 24,
                       fontFamily: families.bold,
@@ -387,7 +380,7 @@ export default function WelcomeScreen() {
                     {t("welcomeGetStarted")}
                   </RNText>
                   <View style={{ position: "absolute", right: spacing[2] }}>
-                    <ArrowRight color={colors.bg.primary} size={24} />
+                    <ArrowRight color={colors.icon.onAccent} size={24} />
                   </View>
                 </View>
               </View>
@@ -408,7 +401,7 @@ export default function WelcomeScreen() {
                   borderRadius: 16,
                   backgroundColor: "transparent",
                   borderWidth: 1,
-                  borderColor: "#B8FF3D",
+                  borderColor: colors.accent.nutrition,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
