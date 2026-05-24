@@ -83,7 +83,7 @@ function FeatureItem({ title, icon, titleFontFamily, cardHeight, useSystemWeight
             fontSize: 16,
             lineHeight: 23,
             fontFamily: titleFontFamily,
-            fontWeight: useSystemWeight ? "700" : undefined,
+            fontWeight: useSystemWeight ? "500" : undefined,
             includeFontPadding: false,
           }}
         >
@@ -330,21 +330,21 @@ export default function WelcomeScreen() {
             <FeatureItem
               title={t("welcomeFeature1")}
               icon="camera"
-              titleFontFamily={families.bold}
+              titleFontFamily={families.regular}
               cardHeight={featureCardHeight}
               useSystemWeight={useSystemWeight}
             />
             <FeatureItem
               title={t("welcomeFeature2")}
               icon="workout"
-              titleFontFamily={families.bold}
+              titleFontFamily={families.regular}
               cardHeight={featureCardHeight}
               useSystemWeight={useSystemWeight}
             />
             <FeatureItem
               title={t("welcomeFeature3")}
               icon="ai"
-              titleFontFamily={families.bold}
+              titleFontFamily={families.regular}
               cardHeight={featureCardHeight}
               useSystemWeight={useSystemWeight}
             />

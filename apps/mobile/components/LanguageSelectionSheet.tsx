@@ -79,14 +79,14 @@ export function LanguageSelectionSheet({
             borderColor: "rgba(255,255,255,0.12)",
             paddingHorizontal: spacing[4],
             paddingTop: spacing[3],
-            paddingBottom: Math.max(insets.bottom, spacing[4]) + spacing[12],
+            paddingBottom: Math.max(insets.bottom, spacing[3]) + spacing[4],
           }}
         >
           <View
             style={{
               width: 44,
               height: 5,
-              borderRadius: radius.full,
+              borderRadius: 16,
               backgroundColor: "rgba(255,255,255,0.24)",
               alignSelf: "center",
               marginBottom: spacing[4],
@@ -123,7 +123,7 @@ export function LanguageSelectionSheet({
               style={({ pressed }) => ({
                 width: 32,
                 height: 32,
-                borderRadius: radius.full,
+                borderRadius: 16,
                 alignItems: "center",
                 justifyContent: "center",
                 backgroundColor: "rgba(255,255,255,0.08)",
@@ -135,7 +135,7 @@ export function LanguageSelectionSheet({
             </Pressable>
           </View>
 
-          <View style={{ width: "100%", marginTop: spacing[4] }}>
+          <View style={{ width: "100%", marginTop: spacing[2], gap: spacing[4], marginBottom: spacing[6] }}>
             {LANGUAGE_OPTIONS.map((language) => {
               const isSelected = draftLanguage === language.code;
 
@@ -147,15 +147,14 @@ export function LanguageSelectionSheet({
                   onPress={() => setDraftLanguage(language.code)}
                   style={({ pressed }) => ({
                     width: "100%",
-                    marginTop: spacing[3],
                     opacity: pressed ? 0.9 : 1,
                   })}
                 >
                   <View
                     style={{
                       width: "100%",
-                      minHeight: 84,
-                      borderRadius: radius.lg,
+                      minHeight: 56,
+                      borderRadius: 16,
                       borderWidth: isSelected ? 2 : 1.2,
                       borderColor: isSelected ? colors.accent.nutrition : "rgba(255,255,255,0.16)",
                       backgroundColor: isSelected ? "rgba(124, 227, 139, 0.12)" : "rgba(16, 23, 38, 0.95)",
@@ -196,7 +195,7 @@ export function LanguageSelectionSheet({
                             color: isSelected ? colors.accent.nutrition : colors.text.primary,
                             fontSize: 17,
                             lineHeight: 22,
-                            fontFamily: families.bold,
+                            fontFamily: isSelected ? families.bold : families.regular,
                             includeFontPadding: false,
                           }}
                         >
@@ -231,14 +230,14 @@ export function LanguageSelectionSheet({
             onPress={() => onApplyLanguage(draftLanguage)}
             style={({ pressed }) => ({
               width: "100%",
-              marginTop: spacing[5],
+              marginTop: 0,
               opacity: pressed ? 0.9 : 1,
             })}
           >
             <View
               style={{
-                height: 56,
-                borderRadius: radius.full,
+                height: 52,
+                borderRadius: 16,
                 backgroundColor: colors.accent.nutrition,
                 borderWidth: 2,
                 borderColor: "rgba(255,255,255,0.75)",
