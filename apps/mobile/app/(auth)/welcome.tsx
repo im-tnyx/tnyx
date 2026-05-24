@@ -5,9 +5,11 @@ import { ArrowRight, Brain, Camera, ChevronRight, Dumbbell } from "lucide-react-
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { LanguageSelectionSheet } from "@/components/LanguageSelectionSheet";
+import { LegalDocumentModal } from "@/components/composite/LegalDocumentModal";
 import { useAppLanguage } from "@/hooks/useAppLanguage";
 import { useAppFont } from "@/hooks/useAppFont";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { legalDocumentsByLanguage, LegalDocumentType } from "@/constants/legal/documents";
 import { radius, spacing } from "@/theme/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -103,6 +105,8 @@ export default function WelcomeScreen() {
   const { colors } = useAppTheme();
   const { width, height } = useWindowDimensions();
   const [isLanguageSheetVisible, setIsLanguageSheetVisible] = useState(false);
+  const [activeLegalType, setActiveLegalType] = useState<LegalDocumentType>("terms");
+  const [isLegalModalVisible, setIsLegalModalVisible] = useState(false);
 
   const currentLanguage = language;
   const languageLabel = currentLanguage.toUpperCase();
@@ -130,6 +134,7 @@ export default function WelcomeScreen() {
   const termsLineHeight = isTinyHeight ? 16 : 18;
   const weightOrUndefined = (weight: "500" | "700" | "800" | "900") =>
     useSystemWeight ? weight : undefined;
+  const legalDocument = legalDocumentsByLanguage[currentLanguage][activeLegalType];
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg.primary }}>
@@ -447,11 +452,23 @@ export default function WelcomeScreen() {
             }}
           >
             {t("welcomeAgreementPrefix")}
-            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline", fontFamily: families.medium }}>
+            <RNText
+              onPress={() => {
+                setActiveLegalType("terms");
+                setIsLegalModalVisible(true);
+              }}
+              style={{ color: colors.accent.nutrition, textDecorationLine: "underline", fontFamily: families.medium }}
+            >
               {t("welcomeTerms")}
             </RNText>
             {t("welcomeAgreementMiddle")}
-            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline", fontFamily: families.medium }}>
+            <RNText
+              onPress={() => {
+                setActiveLegalType("privacy");
+                setIsLegalModalVisible(true);
+              }}
+              style={{ color: colors.accent.nutrition, textDecorationLine: "underline", fontFamily: families.medium }}
+            >
               {t("welcomePrivacy")}
             </RNText>
             .
@@ -467,6 +484,12 @@ export default function WelcomeScreen() {
           setMode(language);
           setIsLanguageSheetVisible(false);
         }}
+      />
+
+      <LegalDocumentModal
+        visible={isLegalModalVisible}
+        document={legalDocument}
+        onClose={() => setIsLegalModalVisible(false)}
       />
     </SafeAreaView>
   );
