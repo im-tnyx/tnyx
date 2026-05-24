@@ -1,5 +1,6 @@
 import { Platform } from "react-native";
 import { getLocales } from "expo-localization";
+import { defaultLanguage, supportedLanguages, SupportedLanguage } from "@/constants/i18n";
 import { useFontPreferenceStore } from "@/store/font-preference.store";
 import { useLanguagePreferenceStore } from "@/store/language-preference.store";
 
@@ -17,10 +18,13 @@ type UseAppFontReturn = {
   useSystemWeight: boolean;
 };
 
-function resolveSystemLanguage(): "en" | "hi" {
+function resolveSystemLanguage(): SupportedLanguage {
   const primaryLocale = getLocales()[0];
-  const languageCode = (primaryLocale?.languageCode ?? "en").toLowerCase();
-  return languageCode === "hi" ? "hi" : "en";
+  const languageCode = (primaryLocale?.languageCode ?? defaultLanguage).toLowerCase();
+
+  return supportedLanguages.includes(languageCode as SupportedLanguage)
+    ? (languageCode as SupportedLanguage)
+    : defaultLanguage;
 }
 
 function getDefaultFamilies(): FontFamilies {
@@ -38,7 +42,7 @@ function getDefaultFamilies(): FontFamilies {
   };
 }
 
-function getCustomFamilies(language: "en" | "hi"): FontFamilies {
+function getCustomFamilies(language: SupportedLanguage): FontFamilies {
   if (language === "en") {
     return {
       regular: "PlusJakartaSans-Regular",

@@ -1,18 +1,21 @@
 import { getLocales } from "expo-localization";
-import { dictionaries, SupportedLanguage, TranslationKey } from "@/constants/i18n";
-import { useLanguagePreferenceStore } from "@/store/language-preference.store";
+import { defaultLanguage, dictionaries, supportedLanguages, SupportedLanguage, TranslationKey } from "@/constants/i18n";
+import { LanguageMode, useLanguagePreferenceStore } from "@/store/language-preference.store";
 
 type UseAppLanguageReturn = {
-  mode: "system" | "en" | "hi";
-  setMode: (mode: "system" | "en" | "hi") => void;
+  mode: LanguageMode;
+  setMode: (mode: LanguageMode) => void;
   language: SupportedLanguage;
   t: (key: TranslationKey) => string;
 };
 
 function resolveSystemLanguage(): SupportedLanguage {
   const primaryLocale = getLocales()[0];
-  const languageCode = (primaryLocale?.languageCode ?? "en").toLowerCase();
-  return languageCode === "hi" ? "hi" : "en";
+  const languageCode = (primaryLocale?.languageCode ?? defaultLanguage).toLowerCase();
+
+  return supportedLanguages.includes(languageCode as SupportedLanguage)
+    ? (languageCode as SupportedLanguage)
+    : defaultLanguage;
 }
 
 export function useAppLanguage(): UseAppLanguageReturn {

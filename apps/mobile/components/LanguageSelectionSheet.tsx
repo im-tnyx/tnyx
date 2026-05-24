@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { Modal, Pressable, Text as RNText, View } from "react-native";
 import { CheckCircle, Circle, X } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { dictionaries, languageFlagByCode, SupportedLanguage, supportedLanguages } from "@/constants/i18n";
 import { useAppFont } from "@/hooks/useAppFont";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { radius, spacing } from "@/theme/tokens";
 
-export type LanguageCode = "en" | "hi";
+export type LanguageCode = SupportedLanguage;
 
 type LanguageSelectionSheetProps = {
   visible: boolean;
@@ -21,11 +22,6 @@ type LanguageOption = {
   title: string;
 };
 
-const LANGUAGE_OPTIONS: LanguageOption[] = [
-  { code: "en", flag: "🇺🇸", title: "ENGLISH" },
-  { code: "hi", flag: "🇮🇳", title: "हिंदी" },
-];
-
 export function LanguageSelectionSheet({
   visible,
   selectedLanguage,
@@ -37,14 +33,20 @@ export function LanguageSelectionSheet({
   const insets = useSafeAreaInsets();
   const [draftLanguage, setDraftLanguage] = useState<LanguageCode>(selectedLanguage);
 
+  const languageOptions: LanguageOption[] = supportedLanguages.map((code) => ({
+    code,
+    flag: languageFlagByCode[code] ?? "🌐",
+    title: dictionaries[code].languageNativeLabel,
+  }));
+
   useEffect(() => {
     if (visible) {
       setDraftLanguage(selectedLanguage);
     }
   }, [selectedLanguage, visible]);
 
-  const title = draftLanguage === "hi" ? "भाषा चुनें" : "Choose language";
-  const applyLabel = draftLanguage === "hi" ? "लागू करें" : "Apply";
+  const title = dictionaries[draftLanguage].languageSheetTitle;
+  const applyLabel = dictionaries[draftLanguage].languageSheetApply;
 
   return (
     <Modal
@@ -136,7 +138,7 @@ export function LanguageSelectionSheet({
           </View>
 
           <View style={{ width: "100%", marginTop: spacing[2], gap: spacing[4], marginBottom: spacing[6] }}>
-            {LANGUAGE_OPTIONS.map((language) => {
+            {languageOptions.map((language) => {
               const isSelected = draftLanguage === language.code;
 
               return (

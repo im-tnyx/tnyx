@@ -8,3 +8,11 @@ export const dictionaries = {
 
 export type SupportedLanguage = keyof typeof dictionaries;
 export type TranslationKey = keyof typeof en;
+
+export const defaultLanguage: SupportedLanguage = "en";
+export const supportedLanguages = Object.keys(dictionaries) as SupportedLanguage[];
+
+export const languageFlagByCode: Partial<Record<SupportedLanguage, string>> = {
+  en: "🇺🇸",
+  hi: "🇮🇳",
+} as const;

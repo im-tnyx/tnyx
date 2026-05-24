@@ -1,6 +1,7 @@
 import { create } from "zustand";
+import type { SupportedLanguage } from "@/constants/i18n";
 
-export type LanguageMode = "system" | "en" | "hi";
+export type LanguageMode = "system" | SupportedLanguage;
 
 type LanguagePreferenceState = {
   mode: LanguageMode;

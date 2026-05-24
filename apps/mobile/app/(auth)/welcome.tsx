@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ImageBackground, Pressable, ScrollView, Text as RNText, View, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
 import { ArrowRight, Brain, Camera, ChevronRight, Dumbbell } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { LanguageSelectionSheet, type LanguageCode } from "@/components/LanguageSelectionSheet";
+import { LanguageSelectionSheet } from "@/components/LanguageSelectionSheet";
 import { useAppLanguage } from "@/hooks/useAppLanguage";
 import { useAppFont } from "@/hooks/useAppFont";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -98,13 +98,13 @@ function FeatureItem({ title, icon, titleFontFamily, cardHeight, useSystemWeight
 }
 
 export default function WelcomeScreen() {
-  const { t, mode, setMode } = useAppLanguage();
+  const { t, mode, setMode, language } = useAppLanguage();
   const { families, useSystemWeight } = useAppFont();
   const { colors } = useAppTheme();
   const { width, height } = useWindowDimensions();
   const [isLanguageSheetVisible, setIsLanguageSheetVisible] = useState(false);
 
-  const currentLanguage: LanguageCode = mode === "hi" ? "hi" : "en";
+  const currentLanguage = language;
   const languageLabel = currentLanguage.toUpperCase();
   const isSmallWidth = width < 380;
   const isCompactHeight = height < 780;
@@ -130,12 +130,6 @@ export default function WelcomeScreen() {
   const termsLineHeight = isTinyHeight ? 16 : 18;
   const weightOrUndefined = (weight: "500" | "700" | "800" | "900") =>
     useSystemWeight ? weight : undefined;
-
-  useEffect(() => {
-    if (mode === "system") {
-      setMode("en");
-    }
-  }, [mode, setMode]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg.primary }}>

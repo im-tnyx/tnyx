@@ -1,4 +1,7 @@
 export const en = {
+  languageSheetTitle: "Choose language",
+  languageSheetApply: "Apply",
+  languageNativeLabel: "ENGLISH",
   tabHome: "Home",
   tabNutrition: "Nutrition",
   tabAi: "AI",
