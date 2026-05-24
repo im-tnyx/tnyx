@@ -14,6 +14,7 @@ type UseAppFontReturn = {
   mode: "default" | "custom";
   setMode: (mode: "default" | "custom") => void;
   families: FontFamilies;
+  useSystemWeight: boolean;
 };
 
 function resolveSystemLanguage(): "en" | "hi" {
@@ -62,6 +63,7 @@ export function useAppFont(): UseAppFontReturn {
   const resolvedLanguage = languageMode === "system" ? resolveSystemLanguage() : languageMode;
 
   const families = mode === "custom" ? getCustomFamilies(resolvedLanguage) : getDefaultFamilies();
+  const useSystemWeight = mode === "default";
 
-  return { mode, setMode, families };
+  return { mode, setMode, families, useSystemWeight };
 }

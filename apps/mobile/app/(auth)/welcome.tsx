@@ -9,14 +9,17 @@ import { useAppLanguage } from "@/hooks/useAppLanguage";
 import { useAppFont } from "@/hooks/useAppFont";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { radius, spacing } from "@/theme/tokens";
+import { LinearGradient } from "expo-linear-gradient";
 
 type FeatureItemProps = {
   title: string;
   icon: "camera" | "workout" | "ai";
   titleFontFamily: string;
+  cardHeight: number;
+  useSystemWeight: boolean;
 };
 
-function FeatureItem({ title, icon, titleFontFamily }: FeatureItemProps) {
+function FeatureItem({ title, icon, titleFontFamily, cardHeight, useSystemWeight }: FeatureItemProps) {
   const { colors } = useAppTheme();
   const Icon = icon === "camera" ? Camera : icon === "workout" ? Dumbbell : Brain;
 
@@ -31,19 +34,18 @@ function FeatureItem({ title, icon, titleFontFamily }: FeatureItemProps) {
       <View
         style={{
           width: "100%",
-          minHeight: 86,
-          marginTop: spacing[3],
+          height: cardHeight,
           borderRadius: radius.lg,
-          backgroundColor: "rgba(16, 23, 38, 0.98)",
-          borderWidth: 1.5,
+          backgroundColor: "transparent",
+          borderWidth: 0.5,
           borderColor: "#B8FF3D",
           shadowColor: "#000000",
           shadowOpacity: 0.45,
           shadowRadius: 12,
           shadowOffset: { width: 0, height: 8 },
-          elevation: 8,
+          elevation: 4,
           justifyContent: "center",
-          paddingHorizontal: spacing[4],
+          paddingHorizontal: spacing[1],
         }}
       >
         <View
@@ -56,18 +58,18 @@ function FeatureItem({ title, icon, titleFontFamily }: FeatureItemProps) {
         >
         <View
           style={{
-            width: 52,
-            height: 52,
-            borderRadius: radius.lg,
-            backgroundColor: "rgba(255,255,255,0.06)",
+            width: 40,
+            height: 40,
+            borderRadius: 16,
+            backgroundColor: "transparent",
             alignItems: "center",
             justifyContent: "center",
-            borderWidth: 1,
+            borderWidth: 0.05,
             borderColor: "rgba(255,255,255,0.16)",
             flexShrink: 0,
           }}
         >
-          <Icon color={colors.accent.nutrition} size={27} />
+          <Icon color={colors.accent.nutrition} size={20} />
         </View>
 
         <RNText
@@ -75,13 +77,13 @@ function FeatureItem({ title, icon, titleFontFamily }: FeatureItemProps) {
           style={{
             flex: 1,
             minWidth: 0,
-            marginLeft: spacing[4],
-            marginRight: spacing[3],
+            marginLeft: spacing[1],
+            marginRight: spacing[1],
             color: colors.text.primary,
-            fontSize: 17,
+            fontSize: 16,
             lineHeight: 23,
             fontFamily: titleFontFamily,
-            fontWeight: "700",
+            fontWeight: useSystemWeight ? "700" : undefined,
             includeFontPadding: false,
           }}
         >
@@ -97,7 +99,7 @@ function FeatureItem({ title, icon, titleFontFamily }: FeatureItemProps) {
 
 export default function WelcomeScreen() {
   const { t, mode, setMode } = useAppLanguage();
-  const { families } = useAppFont();
+  const { families, useSystemWeight } = useAppFont();
   const { colors } = useAppTheme();
   const { width, height } = useWindowDimensions();
   const [isLanguageSheetVisible, setIsLanguageSheetVisible] = useState(false);
@@ -105,9 +107,29 @@ export default function WelcomeScreen() {
   const currentLanguage: LanguageCode = mode === "hi" ? "hi" : "en";
   const languageLabel = currentLanguage.toUpperCase();
   const isSmallWidth = width < 380;
-  const heroFontSize = isSmallWidth ? 30 : 44;
-  const heroLineHeight = isSmallWidth ? 42 : 50;
-  const heroTopMargin = height < 760 ? spacing[10] : spacing[10] + 100;
+  const isCompactHeight = height < 780;
+  const isTinyHeight = height < 700;
+
+  const shouldMiddleScroll = isCompactHeight;
+
+  const heroFontSize = isSmallWidth ? (isTinyHeight ? 26 : 30) : isCompactHeight ? 36 : 42;
+  const heroLineHeight = isSmallWidth ? (isTinyHeight ? 32 : 36) : isCompactHeight ? 42 : 48;
+
+  const subtextFontSize = isTinyHeight ? 14 : 15;
+  const subtextLineHeight = isTinyHeight ? 20 : 22;
+
+  const heroToFeaturesGap = isTinyHeight ? spacing[1] : spacing[3];
+  const featureGap = isTinyHeight ? spacing[1] : spacing[2];
+  const featuresToButtonsGap = isTinyHeight ? spacing[3] : spacing[5];
+
+  const featureCardHeight = isTinyHeight ? 48 : 52;
+  const buttonHeight = isTinyHeight ? 48 : 52;
+  const buttonGap = isTinyHeight ? spacing[3] : 18;
+
+  const termsFontSize = isTinyHeight ? 11 : 12;
+  const termsLineHeight = isTinyHeight ? 16 : 18;
+  const weightOrUndefined = (weight: "500" | "700" | "800" | "900") =>
+    useSystemWeight ? weight : undefined;
 
   useEffect(() => {
     if (mode === "system") {
@@ -128,30 +150,48 @@ export default function WelcomeScreen() {
             left: 0, 
             right: 0, 
             top: 0, 
-            height: "78%", }}
+            height: "75%", }}
           imageStyle={{ opacity: 0.96 }}
         >
-          <View style={{ flex: 1, backgroundColor: "rgba(5, 8, 14, 0.52)" }} />
+          <LinearGradient
+            pointerEvents="none"
+            colors={[
+              "rgba(5, 8, 14, 0.18)",
+              "rgba(5, 8, 14, 0.08)",
+              "rgba(5, 8, 14, 0)",
+            ]}
+            locations={[0, 0.35, 1]}
+            style={style.absoluteFill}
+          />
         </ImageBackground>
 
-        <View
+        <LinearGradient
           pointerEvents="none"
+          colors={[
+            "rgba(5, 8, 14, 0)",
+            "rgba(5, 8, 14, 0.50)",
+            "rgba(5, 8, 14, 1)",
+            "rgba(5, 8, 14, 1)",
+            "rgba(5, 8, 14, 1)",
+            "rgba(5, 8, 14, 1)",
+            "rgba(5, 8, 14, 1)",
+            "rgba(5, 8, 14, 1)",
+          ]}
+          locations={[0, 0.14, 0.28, 0.42, 0.56, 0.7, 0.84, 1]}
           style={{
             position: "absolute",
             left: 0,
             right: 0,
             bottom: 0,
-            height: "60%",
-            backgroundColor: "rgba(5, 8, 14, 0.66)",
+            height: "82%",
           }}
         />
       </View>
 
-      <ScrollView
-        style={{ zIndex: 1 }}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          flexGrow: 1,
+      <View
+        style={{
+          zIndex: 1,
+          flex: 1,
           paddingHorizontal: spacing[4],
           paddingTop: spacing[2],
           paddingBottom: spacing[2],
@@ -178,17 +218,17 @@ export default function WelcomeScreen() {
               borderColor: "rgba(255,255,255,0.18)",
               opacity: pressed ? 0.9 : 1,
               justifyContent: "center",
-              paddingHorizontal: spacing[4],
+              paddingHorizontal: spacing[2],
             })}
           >
             <RNText
               numberOfLines={1}
               style={{
                 color: colors.text.primary,
-                fontSize: 15,
+                fontSize: 18,
                 lineHeight: 20,
                 fontFamily: families.semibold,
-                fontWeight: "800",
+                fontWeight: weightOrUndefined("800"),
                 includeFontPadding: false,
                 textAlign: "center",
               }}
@@ -201,7 +241,7 @@ export default function WelcomeScreen() {
             accessibilityRole="button"
             onPress={() => router.replace("/(tabs)/home")}
             hitSlop={10}
-            style={({ pressed }) => ({ opacity: pressed ? 0.78 : 1, padding: spacing[2] })}
+            style={({ pressed }) => ({ opacity: pressed ? 0.78 : 1, padding: spacing[1] })}
           >
             <RNText
               numberOfLines={1}
@@ -210,7 +250,7 @@ export default function WelcomeScreen() {
                 fontSize: 18,
                 lineHeight: 24,
                 fontFamily: families.semibold,
-                fontWeight: "800",
+                fontWeight: weightOrUndefined("800"),
                 includeFontPadding: false,
               }}
             >
@@ -219,176 +259,211 @@ export default function WelcomeScreen() {
           </Pressable>
         </View>
 
-        <View style={{ marginTop: heroTopMargin }}>
-  <RNText
-    numberOfLines={1}
-    adjustsFontSizeToFit
-    minimumFontScale={0.68}
-    style={{
-      color: colors.text.primary,
-      fontSize: heroFontSize,
-      lineHeight: heroLineHeight,
-      fontFamily: families.bold,
-      fontWeight: "900",
-      letterSpacing: 0,
-      includeFontPadding: false,
-    }}
-           >
-    {t("welcomeHeadlineLine1")}{" "}
-    {t("welcomeHeadlineLine2Start")}
-    <RNText style={{ color: colors.accent.nutrition, fontFamily: families.bold }}>
-      {t("welcomeHeadlineLine2Accent")}
-    </RNText>
-  </RNText>
-
-           <RNText
-    numberOfLines={1}
-    adjustsFontSizeToFit
-    minimumFontScale={0.72}
-    style={{
-      color: colors.text.primary,
-      fontSize: heroFontSize,
-      lineHeight: heroLineHeight,
-      fontFamily: families.bold,
-      fontWeight: "900",
-      letterSpacing: 0,
-      includeFontPadding: false,
-      marginTop: spacing[1],
-    }}
-  >
-    {t("welcomeHeadlineLine3")}
-  </RNText>
-
-          <RNText
-            style={{
-              marginTop: spacing[4],
-              color: colors.text.secondary,
-              fontSize: 16,
-              lineHeight: 24,
-              fontFamily: families.medium,
-              fontWeight: "500",
-              includeFontPadding: false,
-            }}
-          >
-            {t("welcomeSubtextLine1")} {t("welcomeSubtextLine2")}
-          </RNText>
-        </View>
-
-        <View style={{ marginTop: spacing[6] }}>
-          <FeatureItem title={t("welcomeFeature1")} icon="camera" titleFontFamily={families.bold} />
-          <FeatureItem title={t("welcomeFeature2")} icon="workout" titleFontFamily={families.bold} />
-          <FeatureItem title={t("welcomeFeature3")} icon="ai" titleFontFamily={families.bold} />
-        </View>
-
-        <View style={{ marginTop: spacing[8] }}>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => router.replace("/(tabs)/home")}
-            style={({ pressed }) => ({
-              opacity: pressed ? 0.9 : 1,
-            })}
-          >
-            <View
+        <ScrollView
+          style={{ flex: 1 }}
+          scrollEnabled={shouldMiddleScroll}
+          bounces={false}
+          overScrollMode="never"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "flex-end",
+            paddingTop: spacing[6],
+            paddingBottom: spacing[6],
+          }}
+        >
+          <View>
+            <RNText
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.68}
               style={{
-                height: 55,
-                borderRadius: radius.full,
-                backgroundColor: "#B8FF3D",
-                borderWidth: 2,
-                borderColor: "rgba(255,255,255,0.75)",
-                justifyContent: "center",
-                shadowColor: "#000000",
-                shadowOpacity: 0.35,
-                shadowRadius: 18,
-                shadowOffset: { width: 0, height: 10 },
-                elevation: 8,
+                color: colors.text.primary,
+                fontSize: heroFontSize,
+                lineHeight: heroLineHeight,
+                fontFamily: families.bold,
+                fontWeight: weightOrUndefined("900"),
+                letterSpacing: 0,
+                includeFontPadding: false,
               }}
             >
-              <View pointerEvents="none" style={{ width: "100%", alignItems: "center", justifyContent: "center" }}>
+              {t("welcomeHeadlineLine1")} {t("welcomeHeadlineLine2Start")}
+              <RNText style={{ color: colors.accent.nutrition, fontFamily: families.bold }}>
+                {t("welcomeHeadlineLine2Accent")}
+              </RNText>
+            </RNText>
+
+            <RNText
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.72}
+              style={{
+                color: colors.text.primary,
+                fontSize: heroFontSize,
+                lineHeight: heroLineHeight,
+                fontFamily: families.bold,
+                fontWeight: weightOrUndefined("900"),
+                letterSpacing: 0,
+                includeFontPadding: false,
+                marginTop: spacing[1],
+              }}
+            >
+              {t("welcomeHeadlineLine3")}
+            </RNText>
+
+            <RNText
+              style={{
+                marginTop: spacing[2],
+                color: colors.text.secondary,
+                fontSize: subtextFontSize,
+                lineHeight: subtextLineHeight,
+                fontFamily: families.medium,
+                fontWeight: weightOrUndefined("500"),
+                includeFontPadding: false,
+              }}
+            >
+              {t("welcomeSubtextLine1")} {t("welcomeSubtextLine2")}
+            </RNText>
+          </View>
+
+          <View style={{ marginTop: heroToFeaturesGap, gap: featureGap }}>
+            <FeatureItem
+              title={t("welcomeFeature1")}
+              icon="camera"
+              titleFontFamily={families.bold}
+              cardHeight={featureCardHeight}
+              useSystemWeight={useSystemWeight}
+            />
+            <FeatureItem
+              title={t("welcomeFeature2")}
+              icon="workout"
+              titleFontFamily={families.bold}
+              cardHeight={featureCardHeight}
+              useSystemWeight={useSystemWeight}
+            />
+            <FeatureItem
+              title={t("welcomeFeature3")}
+              icon="ai"
+              titleFontFamily={families.bold}
+              cardHeight={featureCardHeight}
+              useSystemWeight={useSystemWeight}
+            />
+          </View>
+
+          <View style={{ marginTop: featuresToButtonsGap, gap: buttonGap }}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => router.replace("/(tabs)/home")}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.9 : 1,
+              })}
+            >
+              <View
+                style={{
+                  height: buttonHeight,
+                  borderRadius: 16,
+                  backgroundColor: "#B8FF3D",
+                  borderWidth: 1,
+                  borderColor: "rgba(255,255,255,0.75)",
+                  justifyContent: "center",
+                  shadowColor: "#000000",
+                  shadowOpacity: 0.35,
+                  shadowRadius: 18,
+                  shadowOffset: { width: 0, height: 10 },
+                  elevation: 8,
+                }}
+              >
+                <View pointerEvents="none" style={{ width: "100%", alignItems: "center", justifyContent: "center" }}>
+                  <RNText
+                    numberOfLines={1}
+                    style={{
+                      color: colors.bg.primary,
+                      fontSize: 18,
+                      lineHeight: 24,
+                      fontFamily: families.bold,
+                      fontWeight: weightOrUndefined("900"),
+                      includeFontPadding: false,
+                    }}
+                  >
+                    {t("welcomeGetStarted")}
+                  </RNText>
+                  <View style={{ position: "absolute", right: spacing[2] }}>
+                    <ArrowRight color={colors.bg.primary} size={24} />
+                  </View>
+                </View>
+              </View>
+            </Pressable>
+
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => router.push("/profile")}
+              style={({ pressed }) => ({
+                width: "80%",
+                alignSelf: "center",
+                opacity: pressed ? 0.9 : 1,
+              })}
+            >
+              <View
+                style={{
+                  height: buttonHeight,
+                  borderRadius: 16,
+                  backgroundColor: "transparent",
+                  borderWidth: 1,
+                  borderColor: "#B8FF3D",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <RNText
                   numberOfLines={1}
                   style={{
-                    color: colors.bg.primary,
-                    fontSize: 18,
-                    lineHeight: 24,
-                    fontFamily: families.bold,
-                    fontWeight: "900",
+                    width: "100%",
+                    textAlign: "center",
+                    color: colors.text.primary,
+                    fontSize: 16,
+                    lineHeight: 22,
+                    fontFamily: families.semibold,
+                    fontWeight: weightOrUndefined("800"),
                     includeFontPadding: false,
                   }}
                 >
-                  {t("welcomeGetStarted")}
+                  {t("welcomeSignIn")}
                 </RNText>
-                <View style={{ position: "absolute", right: spacing[5] }}>
-                  <ArrowRight color={colors.bg.primary} size={25} />
-                </View>
               </View>
-            </View>
-          </Pressable>
+            </Pressable>
+          </View>
+        </ScrollView>
 
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => router.push("/profile")}
-            style={({ pressed }) => ({
-              marginTop: spacing[8],
-              width: "80%",
-              alignSelf: "center",
-              opacity: pressed ? 0.9 : 1,
-            })}
-          >
-            <View
-              style={{
-                height: 56,
-                borderRadius: radius.full,
-                backgroundColor: "rgba(5, 8, 14, 0.72)",
-                borderWidth: 2,
-                borderColor: "#B8FF3D",
-                alignItems: "center",
-                justifyContent: "center",
-                elevation: 2,
-              }}
-            >
-              <RNText
-                numberOfLines={1}
-                style={{
-                  width: "100%",
-                  textAlign: "center",
-                  color: colors.text.primary,
-                  fontSize: 16,
-                  lineHeight: 22,
-                  fontFamily: families.semibold,
-                  fontWeight: "800",
-                  includeFontPadding: false,
-                }}
-              >
-                {t("welcomeSignIn")}
-              </RNText>
-            </View>
-          </Pressable>
-        </View>
-
-        <View 
-          style={{ 
-            marginTop: "auto",
-            paddingTop: spacing[8], 
-            alignItems: "center", 
-            paddingHorizontal: spacing[4] }}>
+        <View
+          style={{
+            alignItems: "center",
+            paddingHorizontal: spacing[4],
+            paddingBottom: spacing[1],
+          }}
+        >
           <RNText
             style={{
               textAlign: "center",
               color: colors.text.muted,
-              fontSize: 14,
-              lineHeight: 22,
+              fontSize: termsFontSize,
+              lineHeight: termsLineHeight,
               fontFamily: families.regular,
-              fontWeight: "500",
+              fontWeight: weightOrUndefined("500"),
               includeFontPadding: false,
             }}
           >
             {t("welcomeAgreementPrefix")}
-            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline", fontFamily: families.medium }}>{t("welcomeTerms")}</RNText>
+            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline", fontFamily: families.medium }}>
+              {t("welcomeTerms")}
+            </RNText>
             {t("welcomeAgreementMiddle")}
-            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline", fontFamily: families.medium }}>{t("welcomePrivacy")}</RNText>.
+            <RNText style={{ color: colors.accent.nutrition, textDecorationLine: "underline", fontFamily: families.medium }}>
+              {t("welcomePrivacy")}
+            </RNText>
+            .
           </RNText>
         </View>
-      </ScrollView>
+      </View>
 
       <LanguageSelectionSheet
         visible={isLanguageSheetVisible}

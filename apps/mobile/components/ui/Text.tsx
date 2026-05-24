@@ -10,12 +10,12 @@ type AppTextProps = TextProps & {
 };
 
 const variantStyleMap = {
-  hero: { fontSize: typography.text["3xl"], fontWeight: "700" },
-  heading: { fontSize: typography.text["2xl"], fontWeight: "600" },
-  title: { fontSize: typography.text.xl, fontWeight: "600" },
-  body: { fontSize: typography.text.md, fontWeight: "400" },
-  caption: { fontSize: typography.text.sm, fontWeight: "400" },
-  label: { fontSize: typography.text.xs, fontWeight: "500" },
+  hero: { fontSize: typography.text["3xl"], lineHeightMultiplier: typography.leading.tight, fontWeight: typography.weight.bold },
+  heading: { fontSize: typography.text["2xl"], lineHeightMultiplier: typography.leading.tight, fontWeight: typography.weight.semibold },
+  title: { fontSize: typography.text.xl, lineHeightMultiplier: typography.leading.normal, fontWeight: typography.weight.semibold },
+  body: { fontSize: typography.text.md, lineHeightMultiplier: typography.leading.normal, fontWeight: typography.weight.regular },
+  caption: { fontSize: typography.text.sm, lineHeightMultiplier: typography.leading.normal, fontWeight: typography.weight.regular },
+  label: { fontSize: typography.text.xs, lineHeightMultiplier: typography.leading.normal, fontWeight: typography.weight.medium },
 } as const;
 
 const variantColorKeyMap: Record<AppTextVariant, "primary" | "secondary" | "muted"> = {
@@ -29,7 +29,7 @@ const variantColorKeyMap: Record<AppTextVariant, "primary" | "secondary" | "mute
 
 export function Text({ variant = "body", style, ...props }: AppTextProps) {
   const { colors } = useAppTheme();
-  const { families } = useAppFont();
+  const { families, useSystemWeight } = useAppFont();
   const variantStyle = variantStyleMap[variant];
   const color = colors.text[variantColorKeyMap[variant]];
   const fontFamily =
@@ -47,9 +47,11 @@ export function Text({ variant = "body", style, ...props }: AppTextProps) {
         {
           fontFamily,
           color,
-          lineHeight: Math.round(variantStyle.fontSize * typography.leading.normal),
+          fontSize: variantStyle.fontSize,
+          lineHeight: Math.round(variantStyle.fontSize * variantStyle.lineHeightMultiplier),
+          fontWeight: useSystemWeight ? variantStyle.fontWeight : undefined,
+          letterSpacing: 0,
         },
-        variantStyle,
         style,
       ]}
       {...props}
